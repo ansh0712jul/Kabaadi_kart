@@ -2,8 +2,7 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
-  
-  "main": "dist/index.js",              
+  "main": "dist/index.js",
   "scripts": {
     "dev": "nodemon src/index.ts"
   },
@@ -16,7 +15,8 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.9.3"
+    "mongoose": "^8.9.3",
+    "morgan": "^1.10.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
@@ -24,6 +24,7 @@
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "@types/jsonwebtoken": "^9.0.7",
+    "@types/morgan": "^1.9.9",
     "@types/node": "^22.10.5",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.3"
