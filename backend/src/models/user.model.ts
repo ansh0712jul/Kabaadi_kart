@@ -24,7 +24,7 @@ const userSchema = new Schema<IUser>({
         unique: true,
         trim: true,
         required: [true , "name is  required"],
-        lowercase: true
+        lowercase: true,
     },
     email : {
         type: String,
@@ -48,9 +48,6 @@ const userSchema = new Schema<IUser>({
     verificationToken: {
         type: String
     },
-    verificationTokenExpires:{
-        type: Date
-    }
 }, 
     {
         timestamps: true
@@ -60,12 +57,11 @@ const userSchema = new Schema<IUser>({
 // hashed the password before saving 
 userSchema.pre("save", async function(next){
     if(!this.isModified("password")) return next();
-
     this.password = await bcrypt.hash(this.password , 10);
+   
 })
 
-// check is password correct 
-
+// custom method to check is password correct 
 userSchema.methods.isPasswordCorrect = async function(password : string) : Promise<boolean>{
     return await bcrypt.compare(password , this.password);
     
@@ -79,7 +75,7 @@ userSchema.methods.generateAccessToken = function(): string{
             username: this.username,
             email: this.email
         },
-        process.env.Access_Token_Secret as string,
+        process.env.ACCESS_TOKEN_SECRET as string,
         {
             expiresIn:process.env.ACCESS_TOKEN_EXPIRES
         }
@@ -94,7 +90,7 @@ userSchema.methods.generateRefreshToken = function(): string{
             username: this.username,
             email: this.email
         },
-        process.env.Refresh_Token_Secret as string,
+        process.env.REFRESH_TOKEN_SECRET as string,
         {
             expiresIn: process.env.REFRESH_TOKEN_EXPIRES
         }
