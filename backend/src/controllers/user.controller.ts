@@ -1,14 +1,16 @@
 import ApiError from "../utils/ApiError";
 import asyncHandler from "../utils/asyncHandler";
 import ApiResponse from "../utils/ApiResponse";
-import User from "../models/user.model";
+import User ,{IUser} from "../models/user.model";
 import { Request, Response } from "express";
 
-
+export interface AuthenticatedRequest extends Request {
+    user?: IUser;
+}
 
 // helper function to generate the access and refereh token
 
-const generateAccessToken = async (userId : string) =>{
+const generateAccessAndRefreshToken = async (userId : string) :Promise<{ accessToken: string; refreshToken: string }> =>{
     try {
         const user = await User.findById(userId);
 
@@ -19,19 +21,19 @@ const generateAccessToken = async (userId : string) =>{
         const accessToken = user.generateAccessToken();
         const refreshToken = user.generateRefreshToken();
         user.refreshToken = refreshToken;
-        await user.save();
+        await user.save({ validateBeforeSave : false });
 
         return {accessToken , refreshToken};
         
     } catch (error : any) {
-        return new ApiError(500, error.message);
+        throw new ApiError(500, "something went wrong while generating tokens ");
     }
     
 }
 
 // Registration endpoint to register a user
 
-const registerUser = asyncHandler(async (req:Request , res:Response)=>{
+export const registerUser = asyncHandler(async (req:Request , res:Response)=>{
 
     const {username , email , password} = req.body;
 
@@ -39,76 +41,104 @@ const registerUser = asyncHandler(async (req:Request , res:Response)=>{
         throw new ApiError(400, "All fields are required");
     }
 
-    const existingUser = await User.findOne({email});
-    if(existingUser?.isVerified){
-        return new ApiError(400 , "user already exists");
-    }
-
-    const verificationToken = Math.floor(1000000+Math.random()*9000000 + 1).toString();
-    const verificationTokenExpires = new Date(Date.now() + 60000)
-
+    const existingUser = await User.findOne({
+        $or: [{ username }, { email }]
+    });
     if(existingUser){
-        if(existingUser.isVerified){
-            return new ApiError(400 , "user already exists with same email or username ");
-        }
-        else {
-            existingUser.verificationToken = verificationToken;
-            existingUser.verificationTokenExpires = verificationTokenExpires;
-            await existingUser.save();
-            // mail service here 
-
-        }
+        throw new ApiError(409 , "user already exists");
     }
-    else{
-        const newUser = await User.create({
-            username,
-            email,
-            password,
-            verificationToken,
-            verificationTokenExpires
-        })
-        await newUser.save();
-        // mail service here
+    
+    const newUser = await User.create({
+        username:username.toLowerCase(),
+        email,
+        password,
+    })
+    await newUser.save();
+    // mail service here
+
+    const createdUser = await User.findById(newUser._id).select("-password -refreshToken");
+    if(!createdUser){
+        throw new ApiError(504 , "something went wrong while registering the user ");
     }
 
-    return res.status(201).json(new ApiResponse(201 , "user registered successfully"));
+    return res.status(201).json(new ApiResponse(201 , createdUser , "user registered successfully"));
 })
 
-// verify a user
+// ednpoint to login user
+export const loginUser = asyncHandler(async (req:Request , res:Response) => {
 
-const verifyUser = asyncHandler(async (req: Request, res: Response) => {
-    const { username, token } = req.body;
-
-    if (!username || !token) {
-        throw new ApiError(301, "Invalid Data for verification of user");
+    const {email , password,username} = req.body;
+    if(!email  && !password ){
+        throw new ApiError(400 , "username or password is required");
     }
 
-    const user = await User.findOne({
-        username: username
+    const loggedInUser = await User.findOne({
+        $or:[{ email } , { username }]
+    })
+
+    if(!loggedInUser){
+        throw new ApiError(404 , "user does not exist");
+    }
+
+    const isValidPassword = await loggedInUser.isPasswordCorrect(password);
+    if(!isValidPassword){
+        throw new ApiError(401 , "Invalid user credentials")
+    }
+
+    const {accessToken, refreshToken} = await generateAccessAndRefreshToken(loggedInUser._id).catch((error) => {
+        throw new ApiError(500, "something went wrong while generating tokens ");
     });
 
-    if (!user) {
-        throw new ApiError(401, "User not found");
+    const user = await User.findById(loggedInUser._id).select("-password -refreshToken")
+
+    // sending cookies 
+    const options ={
+        httpOnly : true,
+        secure : true,
+    }
+    return res
+            .status(200)
+            .cookie("accessToken" , accessToken , options)
+            .cookie("refreshToken" , refreshToken , options)
+            .json(new ApiResponse
+                (200 , 
+                    {
+                        user: user,accessToken,refreshToken
+                    } , 
+                    "user logged in successfully"));
+})
+
+// // endpoint to logout user 
+export const logoutUser = asyncHandler(async (req:AuthenticatedRequest , res:Response) => {
+
+    if(!req.user)    {
+        throw new ApiError(
+            401,
+            "user is not authenticated"
+        )
     }
 
-    if (user.isVerified) {
-        throw new ApiError(302, "User is already verified");
+    await User.findByIdAndUpdate(
+        req.user._id,
+        {
+            $set:{
+                refreshToken:undefined
+            }
+        },
+        {new : true}
+    )
+
+    const options = {
+        httpOnly : true,
+        secure : true,
     }
 
-    const isCodeValid = user.verificationToken === token;
-    //new Date(0) will return 1970-01-01T00:00:00.000Z, which means the code is expired
-    const isCodeNotExpired =
-        new Date(user.verificationTokenExpires || 0) > new Date();
+    return res
+    .status(200)
+    .clearCookie("accessToken" , options)
+    .clearCookie("refreshToken" , options)
+    .json(
+        new ApiResponse(200,{} , "user logged out successfully")
+    )
 
-    if (isCodeValid && isCodeNotExpired) {
-        user.isVerified = true;
-        user.verificationToken = "";
-        user.verificationTokenExpires = undefined;
-        await user.save();
-        return res.status(200).json(new ApiResponse(200, "User verified successfully"));
-    } else if (!isCodeNotExpired) {
-        throw new ApiError(400, "Verification code expired");
-    } else {
-        throw new ApiError(400, "Invalid verification code");
-    }
 })

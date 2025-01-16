@@ -24,11 +24,10 @@ app.use(cookieParser())
 
 
 // import routes using import 
-
+import userRoutes from "./routes/user.routes";
 
 
 // routes declaration 
-
-
+app.use("/user",userRoutes)
 
 export default app

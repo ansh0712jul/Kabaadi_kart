@@ -2,16 +2,13 @@ import mongoose , {Document , Schema , Model} from "mongoose"
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 // define the interfaceof user Schema 
-interface IUser extends Document {
+export interface IUser extends Document {
     _id: string;
     username: string;
     email: string;
     password: string;
-    isVerified: boolean;
     refreshToken?: string;
     isPasswordCorrect(password: string): Promise<boolean>;
-    verificationToken?: string;
-    verificationTokenExpires?: Date;
     generateAccessToken(): string;
     generateRefreshToken(): string;
     
@@ -38,16 +35,9 @@ const userSchema = new Schema<IUser>({
         type: String,
         required:[true, "password is required"],
     },
-    isVerified:{
-        type: Boolean,
-        default: false
-    },
     refreshToken: {
         type: String
-    },
-    verificationToken: {
-        type: String
-    },
+    }
 }, 
     {
         timestamps: true
