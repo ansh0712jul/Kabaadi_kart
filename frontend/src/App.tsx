@@ -1,9 +1,13 @@
 
-import { Button } from './components/ui/button'
+import AppRoutes from "./routes/AppRoutes"
+
+
 
 const App = () => {
   return (
-    <Button>Hello jee</Button>
+    <>
+    <AppRoutes/>
+    </>
   )
 }
 
