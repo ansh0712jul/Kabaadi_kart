@@ -93,7 +93,7 @@ function getGradientColor(index: number) {
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-gray-900 text-gray-100">
+    <div className="min-h-screen bg-black  text-gray-100">
       <Header />
       <main className="container mx-auto px-4 py-12 pt-24">
         <motion.section 
