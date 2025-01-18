@@ -3,6 +3,10 @@ import ApiError from "../utils/ApiError";
 import ApiResponse from "../utils/ApiResponse";
 import { Request , Response } from "express";
 import { PickRequest } from "../models/pickRequest";
+import { IUser } from "../models/user.model";
+export interface AuthenticatedRequest extends Request {
+    user?: IUser;
+}
 
 // creating a pick up request
 export   const  makePickUprequest = asyncHandler(async (req:Request , res:Response) => {
@@ -64,4 +68,19 @@ export   const  makePickUprequest = asyncHandler(async (req:Request , res:Respon
         new ApiResponse(201 , pickRequest , "pick up request created successfully")
     )
         
+})
+
+export const getPickUpRequest = asyncHandler(async (req:AuthenticatedRequest , res:Response) => {
+    const request = await PickRequest.find({
+        email : req.user?.email,
+        status : "Pending"
+    })
+
+    if(!request){
+        throw new ApiError(404 , "pick up request not found");
+    }
+
+    res.status(200).json(
+        new ApiResponse(200 , request , "pick up request found successfully")
+    )
 })
