@@ -1,12 +1,12 @@
-'use client'
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import {  Recycle, DollarSign, TrendingUp, Droplet, Box, Trash2, Layers, FileCheck, AlertTriangle, Gift } from 'lucide-react'
+import { Recycle, DollarSign, TrendingUp, Droplet, Box, Trash2, Layers, FileCheck, AlertTriangle, Gift } from 'lucide-react'
 import { cn } from "@/lib/utils"
 import { Line, LineChart, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, Legend, ResponsiveContainer, BarChart, Bar } from 'recharts'
 import Header from "@/components/ui/Header"
 import Footer from "@/components/ui/Footer"
+import { motion } from "framer-motion"
 
 const recycleRules = [
   {
@@ -93,84 +93,106 @@ function getGradientColor(index: number) {
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 ">
+    <div className="min-h-screen bg-gray-900 text-gray-100">
       <Header />
-      <main className="container mx-auto px-4 py-12">
-        <section className="mb-16">
-          <h2 className="text-4xl font-bold mb-8 text-center text-gray-800">Recycle Rules</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <main className="container mx-auto px-4 py-12 pt-24">
+        <motion.section 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="mb-16"
+        >
+          <h2 className="text-5xl font-bold mb-8 text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-teal-400">Recycle Rules</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
             {recycleRules.map((rule, index) => (
-              <Card key={index} className="hover:shadow-lg transition-shadow duration-300 overflow-hidden">
-                <div className={cn("h-2 bg-gradient-to-r", getGradientColor(index))}></div>
-                <CardHeader className="flex flex-row items-center space-x-4 pb-2">
-                  <div className={cn("w-12 h-12 rounded-full bg-gradient-to-br flex items-center justify-center", getGradientColor(index))}>
-                    {rule.icon && <rule.icon className="h-6 w-6 text-white" />}
-                  </div>
-                  <CardTitle className="text-xl">{rule.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-600 leading-relaxed">{rule.description}</p>
-                </CardContent>
-              </Card>
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+              >
+                <Card className="hover:shadow-xl hover:-translate-y-5 transition-all duration-300 overflow-hidden bg-gray-800 border-none">
+                  <div className={cn("h-2 bg-gradient-to-r", getGradientColor(index))}></div>
+                  <CardHeader className="flex flex-row items-center space-x-4 pb-2">
+                    <div className={cn("w-12 h-12 rounded-full bg-gradient-to-br flex items-center justify-center", getGradientColor(index))}>
+                      {rule.icon && <rule.icon className="h-6 w-6 text-white" />}
+                    </div>
+                    <CardTitle className="text-xl font-semibold text-white">{rule.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-gray-300 leading-relaxed">{rule.description}</p>
+                  </CardContent>
+                </Card>
+              </motion.div>
             ))}
           </div>
-        </section>
+        </motion.section>
 
-        <section className="mb-16 text-center">
-          <Button size="lg" className="text-2xl px-12 py-8 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 bg-primary hover:bg-primary/90">
+        <motion.section 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="mb-16 text-center"
+        >
+          <Button size="lg" className="text-2xl px-12 py-8 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-r from-blue-500 to-teal-500 hover:from-blue-600 hover:to-teal-600 text-white">
             Request Pickup
           </Button>
-        </section>
+        </motion.section>
 
-        <section className="mb-16">
-          <h2 className="text-4xl font-bold mb-8 text-center text-gray-800">Recycling Statistics</h2>
+        <motion.section 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+          className="mb-16"
+        >
+          <h2 className="text-5xl font-bold mb-8 text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-teal-400">Recycling Statistics</h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <Card className="hover:shadow-lg transition-shadow duration-300">
+            <Card className="hover:shadow-xl  transition-all duration-300 bg-gray-800 border-none">
               <CardHeader className="flex flex-row items-center space-x-4 pb-2">
-                <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
-                  <TrendingUp className="h-6 w-6 text-blue-600" />
+                <div className="w-12 h-12 rounded-full bg-blue-900 flex items-center justify-center">
+                  <TrendingUp className="h-6 w-6 text-blue-400" />
                 </div>
-                <CardTitle>Recycling Over Time (kg)</CardTitle>
+                <CardTitle className="text-2xl font-semibold text-white">Recycling Over Time (kg)</CardTitle>
               </CardHeader>
               <CardContent>
                 <ResponsiveContainer width="100%" height={300}>
                   <LineChart data={recyclingData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="year" />
-                    <YAxis />
-                    <RechartsTooltip /> 
+                    <CartesianGrid strokeDasharray="3 3" stroke="#4B5563" />
+                    <XAxis dataKey="year" stroke="#9CA3AF" />
+                    <YAxis stroke="#9CA3AF" />
+                    <RechartsTooltip contentStyle={{ backgroundColor: '#1F2937', border: 'none', color: '#E5E7EB' }} />
                     <Legend />
-                    <Line type="monotone" dataKey="amount" stroke="#3b82f6" strokeWidth={2} />
+                    <Line type="monotone" dataKey="amount" stroke="#3B82F6" strokeWidth={3} dot={{ fill: '#3B82F6', strokeWidth: 2 }} />
                   </LineChart>
                 </ResponsiveContainer>
               </CardContent>
             </Card>
-            <Card className="hover:shadow-lg transition-shadow duration-300">
+            <Card className="hover:shadow-xl transition-all duration-300 bg-gray-800 border-none">
               <CardHeader className="flex flex-row items-center space-x-4 pb-2">
-                <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center">
-                  <DollarSign className="h-6 w-6 text-green-600" />
+                <div className="w-12 h-12 rounded-full bg-green-900 flex items-center justify-center">
+                  <DollarSign className="h-6 w-6 text-green-400" />
                 </div>
-                <CardTitle>Economic Impact (Billion USD)</CardTitle>
+                <CardTitle className="text-2xl font-semibold text-white">Economic Impact (Billion USD)</CardTitle>
               </CardHeader>
               <CardContent>
                 <ResponsiveContainer width="100%" height={300}>
                   <BarChart data={economicImpactData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="year" />
-                    <YAxis />
-                    <RechartsTooltip /> 
+                    <CartesianGrid strokeDasharray="3 3" stroke="#4B5563" />
+                    <XAxis dataKey="year" stroke="#9CA3AF" />
+                    <YAxis stroke="#9CA3AF" />
+                    <RechartsTooltip contentStyle={{ backgroundColor: '#1F2937', border: 'none', color: '#E5E7EB' }} />
                     <Legend />
-                    <Bar dataKey="impact" fill="#10b981" />
+                    <Bar dataKey="impact" fill="#10B981" radius={[4, 4, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
               </CardContent>
             </Card>
           </div>
-        </section>
+        </motion.section>
       </main>
 
-      <Footer/>
-      
+      <Footer />
     </div>
   )
 }
+
