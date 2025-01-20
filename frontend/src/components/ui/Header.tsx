@@ -28,6 +28,7 @@ export default function Header() {
             <li><a href="/about" className="text-gray-300 hover:text-white transition-colors">About</a></li>
             <li><a href="/services" className="text-gray-300 hover:text-white transition-colors">Services</a></li>
             <li><a href="/contact" className="text-gray-300 hover:text-white transition-colors">Contact</a></li>
+            <li><a href="/profile" className="text-gray-300 hover:text-white transition-colors">Profile</a></li>
           </ul>
         </nav>
         <Button  className= "w-36 text-md  shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-r from-blue-500 to-teal-500 hover:from-blue-600 hover:to-teal-600 text-white">Login</Button>
