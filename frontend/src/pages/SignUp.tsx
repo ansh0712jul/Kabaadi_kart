@@ -2,12 +2,13 @@ import { useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Mail, User, Lock } from 'lucide-react'
 import "../App.css"
 import { useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import { z } from "zod";
+import axios from 'axios';
 
 
 // schema for zod validation 
@@ -35,7 +36,7 @@ type SignUpFormData = z.infer<typeof signUpSchema>
 
 const SignUp = () => {
 
-  
+  const navigate = useNavigate();
   // initializing the  react hook form with zod Resolver
   const {
     register,
@@ -48,8 +49,16 @@ const SignUp = () => {
 
 
   // handle form submission
-  const onSubmit = (data: SignUpFormData) => {
-    console.log(data)
+  const onSubmit = async (data: SignUpFormData) => {
+    try {
+      console.log("data " + data);
+      const response = await axios.post('http://localhost:8068/user/sign-up', data);
+      console.log("data1 "+response.data);
+      navigate('/sign-in');
+    } catch (error) {
+      console.error(error);
+      // Handle error (e.g., show error message)
+    }
   }
 
 
@@ -136,4 +145,3 @@ const SignUp = () => {
 }
 
 export default SignUp
-
