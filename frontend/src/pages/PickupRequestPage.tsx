@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -73,10 +73,10 @@ function PickupRequestPage() {
         },
       });
       console.log('Pickup request submitted:', response.data);
-      navigate('/confirmation'); // Redirect to a confirmation page or show a success message
+      navigate('/home'); 
     } catch (error) {
       console.error('Error submitting pickup request:', error);
-      // Handle error (e.g., show error message)
+      
     }
   };
 
