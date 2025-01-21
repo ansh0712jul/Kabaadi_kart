@@ -5,6 +5,7 @@ import HomePage from "@/pages/HomePage";
 import ProfilePage from "@/pages/ProfilePage";
 import { Route, Routes, BrowserRouter } from "react-router-dom";
 import { UserProvider } from "@/contexts/UserContext";
+import PickupRequestPage from "@/pages/PickupRequestPage";
 
 const AppRoutes = () => {
   return (
@@ -16,6 +17,7 @@ const AppRoutes = () => {
           <Route path="/" element={<LandingPage />} />
           <Route path="/home" element={<HomePage />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/pickup-request" element={<PickupRequestPage />} />
         </Routes>
       </UserProvider>
     </BrowserRouter>
