@@ -1,8 +1,15 @@
 import multer from "multer";
 
+export interface FileI {
+    files?: {
+        img?: Express.Multer.File[];
+    };
+}
+
 
 // Configure multer disk storage
 const storage = multer.diskStorage({
+    
     // Set the destination directory for uploaded files
     destination: function (req, file, cb) {
         cb(null, './public/temp'); // Specify the destination directory (change as needed)

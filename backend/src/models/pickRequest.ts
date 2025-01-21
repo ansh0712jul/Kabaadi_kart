@@ -79,9 +79,9 @@ const pickRequestSchema = new Schema<IPickRequest>({
         type : String,
         required : true
     },
-    address :{
+    address :
         addressSchema
-    },
+    ,
     sellOrDonate:{
         type : String,
         enum : ["Sell","Donate"],
