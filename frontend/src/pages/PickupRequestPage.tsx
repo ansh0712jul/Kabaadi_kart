@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useEffect } from "react"
+import { useState, useEffect } from "react"
 import axios from "axios"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -12,13 +12,13 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useToast } from "@/hooks/use-toast"
 
-// type definition for state 
+// Type definition for state
 interface State {
   id: number
   name: string
 }
 
-// schema for zod validation 
+// Schema for Zod validation
 const pickupRequestSchema = z.object({
   name: z.string().nonempty("Name is required"),
   email: z.string().email("Invalid email format").nonempty("Email is required"),
@@ -34,26 +34,25 @@ const pickupRequestSchema = z.object({
   img: z.instanceof(FileList).refine((files) => files.length > 0, "Image is required"),
 })
 
-// type definition for from data
+// Type definition for form data
 type PickupRequestFormData = z.infer<typeof pickupRequestSchema>
 
 function PickupRequestPage() {
-
   const categories = ["Metal", "Plastic", "Paper", "Battery", "Electronic Devices", "Glass", "Clothing", "Other"]
-  const [selectedcategories, setSelectedCategories] = useState<string[]>([])
-  const [isOpen ,  setIsOpen] = useState(false)
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([])
+  const [isOpen, setIsOpen] = useState(false)
   const [state, setState] = useState<State[]>([])
 
   const toggleDialog = () => {
     setIsOpen(!isOpen)
   }
 
-  // function to add or remove selected category
+  // Function to add or remove selected category
   const handleCheckboxChange = (category: string) => {
     setSelectedCategories((prevSelected) =>
       prevSelected.includes(category)
-        ? prevSelected.filter((item) => item !== category) 
-        : [...prevSelected, category] 
+        ? prevSelected.filter((item) => item !== category)
+        : [...prevSelected, category]
     )
   }
 
@@ -111,12 +110,10 @@ function PickupRequestPage() {
     setState(States)
   }, [])
 
-
   // Sync multi-select categories with form state
   useEffect(() => {
-    setValue("category", selectedcategories) 
-  }, [selectedcategories, setValue])
-
+    setValue("category", selectedCategories)
+  }, [selectedCategories, setValue])
 
   const onSubmit = async (data: PickupRequestFormData) => {
     const formData = new FormData()
@@ -134,13 +131,14 @@ function PickupRequestPage() {
           "Content-Type": "multipart/form-data",
         },
       })
-      console.log("Pickup request submitted:", response.data)
+      console.log('Pickup request submitted:', response.data)
+
       toast({
         title: "Success",
         description: "Your pickup request has been submitted successfully.",
       })
-      
-      window.location.href = "/profile";
+
+      window.location.href = "/profile"
     } catch (error) {
       console.error("Error submitting pickup request:", error)
       toast({
@@ -152,14 +150,14 @@ function PickupRequestPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-500 to-purple-600 p-4 flex items-center justify-center">
+    <div className="min-h-screen w-full bg-gradient-to-br from-blue-500 to-purple-600 p-4 flex items-center justify-center">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
         className="w-full max-w-2xl"
       >
-        <Card className="backdrop-blur-lg bg-white/10 shadow-2xl">
+        <Card className="backdrop-blur-lg bg-white/10 shadow-2xl w-[70%] mx-auto">
           <CardHeader className="text-center text-white">
             <CardTitle className="text-2xl font-bold">Pickup Request</CardTitle>
             <CardDescription className="text-sm text-gray-200">Fill in the details to request a pickup</CardDescription>
@@ -168,6 +166,7 @@ function PickupRequestPage() {
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1">
+                  <label className="text-white">Name</label>
                   <Input
                     placeholder="Name"
                     className="w-full bg-white/20 border-0 text-white placeholder-gray-300"
@@ -175,16 +174,19 @@ function PickupRequestPage() {
                   />
                   {errors.name && <p className="text-xs text-red-400">{errors.name.message}</p>}
                 </div>
+
                 <div className="space-y-1">
+                  <label className="text-white">Email</label>
                   <Input
-                    type="email"
                     placeholder="Email"
                     className="w-full bg-white/20 border-0 text-white placeholder-gray-300"
                     {...register("email")}
                   />
                   {errors.email && <p className="text-xs text-red-400">{errors.email.message}</p>}
                 </div>
+
                 <div className="space-y-1">
+                  <label className="text-white">Phone</label>
                   <Input
                     placeholder="Phone"
                     className="w-full bg-white/20 border-0 text-white placeholder-gray-300"
@@ -192,7 +194,9 @@ function PickupRequestPage() {
                   />
                   {errors.phone && <p className="text-xs text-red-400">{errors.phone.message}</p>}
                 </div>
+
                 <div className="space-y-1">
+                  <label className="text-white">Pick-Up Date</label>
                   <Input
                     type="date"
                     placeholder="Pick-Up Date"
@@ -201,17 +205,42 @@ function PickupRequestPage() {
                   />
                   {errors.pickUpDate && <p className="text-xs text-red-400">{errors.pickUpDate.message}</p>}
                 </div>
+
                 <div className="space-y-1">
-                  <Input
-                    type="time"
-                    placeholder="Pick-Up Time"
-                    className="w-full bg-white/20 border-0 text-white placeholder-gray-300"
-                    {...register("pickUpTime")}
-                  />
+                  <label className="text-white">Pick-Up Time</label>
+                  <Select {...register("pickUpTime")}>
+                    <SelectTrigger className="w-full bg-white/20 text-white">
+                      <SelectValue placeholder="Select Time" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="9-12">9-12AM</SelectItem>
+                      <SelectItem value="3-6">3-6PM</SelectItem>
+                    </SelectContent>
+                  </Select>
                   {errors.pickUpTime && <p className="text-xs text-red-400">{errors.pickUpTime.message}</p>}
                 </div>
-                
+
                 <div className="space-y-1">
+                  <label className="text-white">Category</label>
+                  <div className="flex flex-wrap gap-2">
+                    {categories.map((category) => (
+                      <label key={category} className="flex items-center gap-2 text-white">
+                        <input
+                          type="checkbox"
+                          value={category}
+                          checked={selectedCategories.includes(category)}
+                          onChange={() => handleCheckboxChange(category)}
+                          className="w-4 h-4 text-blue-500 border-gray-300 rounded"
+                        />
+                        {category}
+                      </label>
+                    ))}
+                  </div>
+                  {errors.category && <p className="text-xs text-red-400">{errors.category.message}</p>}
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-white">Street</label>
                   <Input
                     placeholder="Street"
                     className="w-full bg-white/20 border-0 text-white placeholder-gray-300"
@@ -219,7 +248,9 @@ function PickupRequestPage() {
                   />
                   {errors.street && <p className="text-xs text-red-400">{errors.street.message}</p>}
                 </div>
+
                 <div className="space-y-1">
+                  <label className="text-white">City</label>
                   <Input
                     placeholder="City"
                     className="w-full bg-white/20 border-0 text-white placeholder-gray-300"
@@ -227,27 +258,26 @@ function PickupRequestPage() {
                   />
                   {errors.city && <p className="text-xs text-red-400">{errors.city.message}</p>}
                 </div>
+
                 <div className="space-y-1">
-                  <Select onValueChange={(value) => setValue("state", value)}>
-                    <SelectTrigger className="w-full bg-white/20 border-0 text-white">
-                      <SelectValue placeholder="Select a state" />
+                  <label className="text-white">State</label>
+                  <Select {...register("state")}>
+                    <SelectTrigger className="w-full bg-white/20 text-white">
+                      <SelectValue placeholder="Select State" />
                     </SelectTrigger>
                     <SelectContent>
-                      {state.map((states) => (
-                        <SelectItem key={states.id} value={states.name}>
-                          {states.name}
+                      {state.map((s) => (
+                        <SelectItem key={s.id} value={s.name}>
+                          {s.name}
                         </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
-                  {
-                    errors.state && 
-                    <p className="text-xs text-red-400">
-                      {errors.state.message}
-                    </p>
-                  }
+                  {errors.state && <p className="text-xs text-red-400">{errors.state.message}</p>}
                 </div>
+
                 <div className="space-y-1">
+                  <label className="text-white">Postal Code</label>
                   <Input
                     placeholder="Postal Code"
                     className="w-full bg-white/20 border-0 text-white placeholder-gray-300"
@@ -255,7 +285,9 @@ function PickupRequestPage() {
                   />
                   {errors.postal && <p className="text-xs text-red-400">{errors.postal.message}</p>}
                 </div>
+
                 <div className="space-y-1">
+                  <label className="text-white">Country</label>
                   <Input
                     placeholder="Country"
                     className="w-full bg-white/20 border-0 text-white placeholder-gray-300"
@@ -263,55 +295,24 @@ function PickupRequestPage() {
                   />
                   {errors.country && <p className="text-xs text-red-400">{errors.country.message}</p>}
                 </div>
-                <div className="relative inline-block w-full space-y-1 sm:col-span-2">
-                  <button
-                    type="button"
-                    className="w-full bg-white/20 border-0 text-white px-4 py-2 rounded-md"
-                    onClick={toggleDialog}
-                  >
-                    {selectedcategories.length > 0
-                      ? selectedcategories.join(", ")
-                      : "Select Categories"}
-                    <span className="float-right">▼</span>
-                  </button>
-                  {isOpen && (
-                    <div className="absolute z-10 mt-2 w-full bg-white shadow-lg rounded-md max-h-48 overflow-y-auto">
-                      <ul className="p-2">
-                        {categories.map((category) => (
-                          <li key={category} className="flex items-center py-1">
-                            <input
-                              type="checkbox"
-                              id={category}
-                              value={category}
-                              checked={selectedcategories.includes(category)}
-                              onChange={() => handleCheckboxChange(category)}
-                              className="form-checkbox h-4 w-4 text-blue-500 rounded"
-                            />
-                            <label htmlFor={category} className="ml-2 text-sm text-gray-700">
-                              {category}
-                            </label>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                  {errors.category && <p className="text-xs text-red-400">{errors.category.message}</p>}
-                </div>
-                <div className="space-y-1 sm:col-span-2">
-                  <Input
+
+                <div className="space-y-1">
+                  <label className="text-white">Image</label>
+                  <input
                     type="file"
-                    className="w-full bg-white/20 border-0 text-white file:bg-blue-500 file:text-white file:border-0 file:rounded-md file:px-4 file:py-2 hover:file:bg-blue-600"
+                    className="w-full text-white"
                     {...register("img")}
                   />
                   {errors.img && <p className="text-xs text-red-400">{errors.img.message}</p>}
                 </div>
+
+                <Button
+                  type="submit"
+                  className="w-full py-4 text-lg bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white rounded-lg transition-all duration-300 ease-in-out transform hover:scale-105"
+                >
+                  Submit Request
+                </Button>
               </div>
-              <Button
-                type="submit"
-                className="w-full py-4 text-lg bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white rounded-lg transition-all duration-300 ease-in-out transform hover:scale-105"
-              >
-                Submit Request
-              </Button>
             </form>
           </CardContent>
         </Card>
@@ -321,4 +322,3 @@ function PickupRequestPage() {
 }
 
 export default PickupRequestPage
-
