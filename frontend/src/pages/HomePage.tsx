@@ -94,7 +94,7 @@ function getGradientColor(index: number) {
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-black  text-gray-100">
-      <Header />
+      <Header buttonText="Make request" navigateTo="pickup-request" />
       <main className="container mx-auto px-4 py-12 pt-24">
         <motion.section 
           initial={{ opacity: 0, y: 20 }}

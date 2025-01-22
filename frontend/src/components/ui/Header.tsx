@@ -1,9 +1,11 @@
 
 import { Button } from "@/components/ui/button"
 import { useState, useEffect } from 'react'
+import {  useNavigate } from "react-router-dom"
 
-export default function Header() {
+export default function Header({buttonText, navigateTo}: {buttonText: string, navigateTo?: string}) {
   const [isScrolled, setIsScrolled] = useState(false)
+  const navigate = useNavigate()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -31,7 +33,14 @@ export default function Header() {
             <li><a href="/profile" className="text-gray-300 hover:text-white transition-colors">Profile</a></li>
           </ul>
         </nav>
-        <Button  className= "w-36 text-md  shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-r from-blue-500 to-teal-500 hover:from-blue-600 hover:to-teal-600 text-white">Login</Button>
+        <Button 
+        onClick={() => {
+          
+          navigate(`/${navigateTo}`);
+        }}
+         className= "w-36 text-md text-white shadow-lg bg-gradient-to-r from-purple-700 to-purple-600  rounded-lg hover:from-purple-700 hover:to-purple-600">
+          {buttonText }
+          </Button>
       </div>
     </header>
   )
