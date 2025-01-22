@@ -158,104 +158,104 @@ function PickupRequestPage() {
         className="w-full max-w-2xl"
       >
         <Card className="backdrop-blur-lg bg-white/10 shadow-2xl sm:w-[38rem] md:w-[50rem] overflow-auto scroll-sm">
-          <CardHeader className="text-center text-purple-500">
+          <CardHeader className="text-center text-green-500">
             <CardTitle className="text-3xl font-bold">Pickup Request</CardTitle>
-            <CardDescription className="text-lg text-purple-300">Fill in the details to request a pickup</CardDescription>
+            <CardDescription className="text-lg text-green-200">Fill in the details to request a pickup</CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <Label htmlFor="name" className="text-white">
+                  <Label htmlFor="name" className="text-green-600">
                     Name
                   </Label>
                   <Input
                     id="name"
                     placeholder="Your Name"
-                    className="w-full bg-white/20 border-0 text-white placeholder-gray-300"
+                    className="w-full bg-white/20 border-0 text-green-600 placeholder-gray-300"
                     {...register("name")}
                   />
                   {errors.name && <p className="text-xs text-red-400">{errors.name.message}</p>}
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="email" className="text-white">
+                  <Label htmlFor="email" className="text-green-600">
                     Email
                   </Label>
                   <Input
                     id="email"
                     type="email"
                     placeholder="your@email.com"
-                    className="w-full bg-white/20 border-0 text-white placeholder-gray-300"
+                    className="w-full bg-white/20 border-0 text-green-600 placeholder-gray-300"
                     {...register("email")}
                   />
                   {errors.email && <p className="text-xs text-red-400">{errors.email.message}</p>}
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="phone" className="text-white">
+                  <Label htmlFor="phone" className="text-green-600">
                     Phone
                   </Label>
                   <Input
                     id="phone"
                     placeholder="Your Phone Number"
-                    className="w-full bg-white/20 border-0 text-white placeholder-gray-300"
+                    className="w-full bg-white/20 border-0 text-green-600 placeholder-gray-300"
                     {...register("phone")}
                   />
                   {errors.phone && <p className="text-xs text-red-400">{errors.phone.message}</p>}
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="pickUpDate" className="text-white">
+                  <Label htmlFor="pickUpDate" className="text-green-600">
                     Pick-Up Date
                   </Label>
                   <Input
                     id="pickUpDate"
                     type="date"
-                    className="w-full bg-white/20 border-0 text-white placeholder-gray-300"
+                    className="w-full bg-white/20 border-0 text-green-600 placeholder-gray-300"
                     {...register("pickUpDate")}
                   />
                   {errors.pickUpDate && <p className="text-xs text-red-400">{errors.pickUpDate.message}</p>}
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="pickUpTime" className="text-white">
+                  <Label htmlFor="pickUpTime" className="text-green-600">
                     Pick-Up Time
                   </Label>
                   <Input
                     id="pickUpTime"
                     type="time"
-                    className="w-full bg-white/20 border-0 text-white placeholder-gray-300"
+                    className="w-full bg-white/20 border-0 text-green-600 placeholder-gray-300"
                     {...register("pickUpTime")}
                   />
                   {errors.pickUpTime && <p className="text-xs text-red-400">{errors.pickUpTime.message}</p>}
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="street" className="text-white">
+                  <Label htmlFor="street" className="text-green-600">
                     Street
                   </Label>
                   <Input
                     id="street"
                     placeholder="Street Address"
-                    className="w-full bg-white/20 border-0 text-white placeholder-gray-300"
+                    className="w-full bg-white/20 border-0 text-green-600 placeholder-gray-300"
                     {...register("street")}
                   />
                   {errors.street && <p className="text-xs text-red-400">{errors.street.message}</p>}
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="city" className="text-white">
+                  <Label htmlFor="city" className="text-green-600">
                     City
                   </Label>
                   <Input
                     id="city"
                     placeholder="City"
-                    className="w-full bg-white/20 border-0 text-white placeholder-gray-300"
+                    className="w-full bg-white/20 border-0 text-green-600 placeholder-gray-300"
                     {...register("city")}
                   />
                   {errors.city && <p className="text-xs text-red-400">{errors.city.message}</p>}
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="state" className="text-white">
+                  <Label htmlFor="state" className="text-green-600">
                     State
                   </Label>
                   <Select onValueChange={(value) => setValue("state", value)}>
-                    <SelectTrigger id="state" className="w-full bg-white/20 border-0 text-white">
+                    <SelectTrigger id="state" className="w-full bg-white/20 border-0 text-green-600">
                       <SelectValue placeholder="Select a state" />
                     </SelectTrigger>
                     <SelectContent>
@@ -269,31 +269,31 @@ function PickupRequestPage() {
                   {errors.state && <p className="text-xs text-red-400">{errors.state.message}</p>}
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="postal" className="text-white">
+                  <Label htmlFor="postal" className="text-green-600">
                     Postal Code
                   </Label>
                   <Input
                     id="postal"
                     placeholder="Postal Code"
-                    className="w-full bg-white/20 border-0 text-white placeholder-gray-300"
+                    className="w-full bg-white/20 border-0 text-green-600 placeholder-gray-300"
                     {...register("postal")}
                   />
                   {errors.postal && <p className="text-xs text-red-400">{errors.postal.message}</p>}
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="country" className="text-white">
+                  <Label htmlFor="country" className="text-green-600">
                     Country
                   </Label>
                   <Input
                     id="country"
                     placeholder="Country"
-                    className="w-full bg-white/20 border-0 text-white placeholder-gray-300"
+                    className="w-full bg-white/20 border-0 text-green-600 placeholder-gray-300"
                     {...register("country")}
                   />
                   {errors.country && <p className="text-xs text-red-400">{errors.country.message}</p>}
                 </div>
                 <div className="relative inline-block w-full space-y-1 sm:col-span-2">
-                  <Label className="text-white">Categories</Label>
+                  <Label className="text-green-600">Categories</Label>
                     <button
                     type = "button"
                     className="w-full bg-white/20 border-0 text-gray-200 rounded-md px-4 py-2 hover:bg-white/30 flex justify-between"
@@ -332,7 +332,7 @@ function PickupRequestPage() {
                 </div>
 
                 <div className="space-y-2 sm:col-span-2">
-                  <Label className="text-white">Sell or Donate</Label>
+                  <Label className="text-green-600">Sell or Donate</Label>
                   <div className="flex items-center space-x-4">
                     {/* Sell Checkbox */}
                     <div className="flex items-center space-x-2">
@@ -366,13 +366,13 @@ function PickupRequestPage() {
                 </div>
 
                 <div className="space-y-2 sm:col-span-2">
-                  <Label htmlFor="img" className="text-white">
+                  <Label htmlFor="img" className="text-green-600">
                     Upload Image
                   </Label>
                   <Input
                     id="img"
                     type="file"
-                    className="w-full bg-white/20 border-0 text-white file:bg-purple-500 file:text-white file:border-0 file:rounded-md file:px-4 file:py-2 hover:file:bg-purple-600"
+                    className="w-full bg-white/20 border-0 text-green-600 file:bg-purple-500 file:text-green-600 file:border-0 file:rounded-md file:px-4 file:py-2 hover:file:bg-purple-600"
                     {...register("img")}
                   />
                   {errors.img && <p className="text-xs text-red-400">{errors.img.message}</p>}
@@ -380,7 +380,7 @@ function PickupRequestPage() {
               </div>
               <Button
                 type="submit"
-                className="w-full py-4 text-lg bg-gradient-to-r from-purple-700 to-purple-600 text-white rounded-lg hover:from-purple-700 hover:to-purple-600 "
+                className="w-full py-4 text-lg bg-green-500 hover:bg-green-600 text-gray-900 "
               >
                 Submit Request
               </Button>

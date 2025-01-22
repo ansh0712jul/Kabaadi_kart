@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button"
 import { useState, useEffect } from 'react'
 import {  useNavigate } from "react-router-dom"
 
-export default function Header({buttonText, navigateTo}: {buttonText: string, navigateTo?: string}) {
+export default function Header({buttonText, navigateTo}: {buttonText?: string, navigateTo?: string}) {
   const [isScrolled, setIsScrolled] = useState(false)
   const navigate = useNavigate()
 
@@ -27,8 +27,8 @@ export default function Header({buttonText, navigateTo}: {buttonText: string, na
         <nav>
           <ul className="flex space-x-6">
             <li><a href="/" className="text-gray-300 hover:text-white transition-colors">Home</a></li>
-            <li><a href="/about" className="text-gray-300 hover:text-white transition-colors">About</a></li>
-            <li><a href="/services" className="text-gray-300 hover:text-white transition-colors">Services</a></li>
+           
+            <li><a href="/services" className="text-gray-300 hover:text-white transition-colors">Pricing</a></li>
             <li><a href="/contact" className="text-gray-300 hover:text-white transition-colors">Contact</a></li>
             <li><a href="/profile" className="text-gray-300 hover:text-white transition-colors">Profile</a></li>
           </ul>
@@ -38,7 +38,7 @@ export default function Header({buttonText, navigateTo}: {buttonText: string, na
           
           navigate(`/${navigateTo}`);
         }}
-         className= "w-36 text-md text-white shadow-lg bg-gradient-to-r from-purple-700 to-purple-600  rounded-lg hover:from-purple-700 hover:to-purple-600">
+         className= "w-36 text-md  shadow-lg bg-green-500 hover:bg-green-600 text-gray-900">
           {buttonText }
           </Button>
       </div>

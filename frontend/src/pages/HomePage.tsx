@@ -102,7 +102,7 @@ export default function HomePage() {
           transition={{ duration: 0.5 }}
           className="mb-16"
         >
-          <h2 className="text-5xl font-bold mb-8 text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-teal-400">Recycle Rules</h2>
+          <h2 className="text-5xl font-bold mb-8 text-center bg-clip-text text-transparent bg-green-600  text-gray-900">Recycle Rules</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
             {recycleRules.map((rule, index) => (
               <motion.div
@@ -134,7 +134,7 @@ export default function HomePage() {
           transition={{ duration: 0.5, delay: 0.2 }}
           className="mb-16 text-center"
         >
-          <Button size="lg" className="text-2xl px-12 py-8 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-r from-blue-500 to-teal-500 hover:from-blue-600 hover:to-teal-600 text-white">
+          <Button size="lg" className="text-2xl px-12 py-8 rounded-full shadow-lg bg-green-500 hover:bg-green-600 text-gray-900">
             Request Pickup
           </Button>
         </motion.section>
@@ -145,7 +145,7 @@ export default function HomePage() {
           transition={{ duration: 0.5, delay: 0.4 }}
           className="mb-16"
         >
-          <h2 className="text-5xl font-bold mb-8 text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-teal-400">Recycling Statistics</h2>
+          <h2 className="text-5xl font-bold mb-8 text-center bg-clip-text text-transparent bg-green-500 hover:bg-green-600 text-gray-900">Recycling Statistics</h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <Card className="hover:shadow-xl  transition-all duration-300 bg-gray-800 border-none">
               <CardHeader className="flex flex-row items-center space-x-4 pb-2">

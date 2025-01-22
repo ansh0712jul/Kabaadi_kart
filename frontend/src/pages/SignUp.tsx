@@ -57,7 +57,7 @@ const SignUp = () => {
       navigate('/sign-in');
     } catch (error) {
       console.error(error);
-      // Handle error (e.g., show error message)
+      
     }
   }
 
@@ -72,7 +72,7 @@ const SignUp = () => {
         onMouseLeave={() => setIsHovered(false)}
       >
         <CardHeader className="mb-6">
-          <h1 className="text-4xl font-bold text-center text-purple-300">Create Your Account</h1>
+          <h1 className="text-4xl font-bold text-center text-green-600">Create Your Account</h1>
           <p className="text-center text-lg text-gray-400 mt-2">Join us and start your journey!</p>
         </CardHeader>
         <CardContent>
@@ -80,7 +80,7 @@ const SignUp = () => {
           onSubmit={handleSubmit(onSubmit) }
           className="space-y-6">
             <div className="relative">
-              <Mail className={`absolute left-3 top-1/2 transform -translate-y-1/2 text-purple-600 ${errors.email ? 'top-1/3' : 'top-1/2'}`} />
+              <Mail className={`absolute left-3 top-1/2 transform -translate-y-1/2 text-green-300 ${errors.email ? 'top-1/3' : 'top-1/2'}`} />
               <Input
                 className=" pl-10 w-full text-lg text-white bg-white/20 border-0 rounded-lg py-3 px-10 focus:outline-none focus:ring-2 focus:ring-white/50 placeholder-gray-300"
                 type="text"
@@ -94,7 +94,7 @@ const SignUp = () => {
             </div>
 
             <div className="relative">
-              <User className={`absolute left-3 top-1/2 transform -translate-y-1/2 text-purple-600 ${errors.username ? 'top-1/3' : 'top-1/2'}`} />
+              <User className={`absolute left-3 top-1/2 transform -translate-y-1/2 text-green-300 ${errors.username ? 'top-1/3' : 'top-1/2'}`} />
               <Input
                 className="pl-10 w-full text-lg text-gray-100 bg-white/20 border-0 rounded-lg py-3 px-10 focus:outline-none focus:ring-2 focus:ring-white/50 placeholder-gray-300"
                 type="text"
@@ -110,7 +110,7 @@ const SignUp = () => {
             </div>
 
             <div className="relative">
-              <Lock className={`absolute left-3 top-1/2 transform -translate-y-1/2 text-purple-600 ${errors.password ? 'top-1/3' : 'top-1/2'}`} />
+              <Lock className={`absolute left-3 top-1/2 transform -translate-y-1/2 text-green-300 ${errors.password ? 'top-1/3' : 'top-1/2'}`} />
               <Input
                 className="pl-10 w-full text-lg text-white bg-white/20 border-0 rounded-lg py-3 px-10 focus:outline-none focus:ring-2 focus:ring-white/50 placeholder-gray-300"
                 type="password"
@@ -125,7 +125,7 @@ const SignUp = () => {
 
             </div>
 
-            <Button className="w-full text-xl py-6 mt-4 bg-gradient-to-r from-purple-700 to-purple-600 text-white rounded-lg hover:from-purple-700 hover:to-purple-600  focus:outline-none focus:ring-2 focus:ring-teal-500 transition-all duration-300 ease-in-out transform hover:scale-105">
+            <Button className="w-full text-xl py-6 mt-4 bg-green-500 hover:bg-green-600 text-gray-900 focus:outline-none focus:ring-2 focus:ring-teal-500 transition-all duration-300 ease-in-out transform hover:scale-105">
               Get Started
             </Button>
           </form>

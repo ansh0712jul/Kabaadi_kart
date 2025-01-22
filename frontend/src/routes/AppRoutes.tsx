@@ -6,6 +6,7 @@ import ProfilePage from "@/pages/ProfilePage";
 import { Route, Routes, BrowserRouter } from "react-router-dom";
 import { UserProvider } from "@/contexts/UserContext";
 import PickupRequestPage from "@/pages/PickupRequestPage";
+import AboutPage from "@/pages/AboutPage";
 
 const AppRoutes = () => {
   return (
@@ -14,10 +15,11 @@ const AppRoutes = () => {
         <Routes>
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/sign-in" element={<SignIn />} />
-          <Route path="/" element={<LandingPage />} />
+          <Route path="/" element={<AboutPage />} />
           <Route path="/home" element={<HomePage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/pickup-request" element={<PickupRequestPage />} />
+          <Route path="about" element={ <AboutPage/> }/>
         </Routes>
       </UserProvider>
     </BrowserRouter>

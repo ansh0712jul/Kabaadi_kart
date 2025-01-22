@@ -67,13 +67,13 @@ const SignIn = () => {
         onMouseLeave={() => setIsHovered(false)}
       >
         <CardHeader className="mb-6">
-          <h1 className="text-4xl font-bold text-center text-purple-700">Sign In</h1>
-          <p className="text-center text-lg text-purple-300 mt-2">Welcome back! Please login to your account.</p>
+          <h1 className="text-4xl font-bold text-center text-green-700">Sign In</h1>
+          <p className="text-center text-lg text-gray-300 mt-2">Welcome back! Please login to your account.</p>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit(handleLogin)} className="space-y-6">
             <div className="relative">
-              <Mail className={`absolute left-3 top-1/2 transform -translate-y-1/2 text-purple-600 ${errors.email ? 'top-1/3' : 'top-1/2'}`} />
+              <Mail className={`absolute left-3 top-1/2 transform -translate-y-1/2 text-green-300 ${errors.email ? 'top-1/3' : 'top-1/2'}`} />
               <Input
                 className="pl-10 w-full text-lg text-white bg-white/20 border-0 rounded-lg py-3 px-10 focus:outline-none focus:ring-2 focus:ring-white/50 placeholder-gray-300"
                 type="text"
@@ -84,7 +84,7 @@ const SignIn = () => {
             </div>
 
             <div className="relative">
-              <Lock className={`absolute left-3 top-1/2 transform -translate-y-1/2 text-purple-600 font-bold ${errors.password ? 'top-1/3' : 'top-1/2'}`} />
+              <Lock className={`absolute left-3 top-1/2 transform -translate-y-1/2 text-green-300 font-bold ${errors.password ? 'top-1/3' : 'top-1/2'}`} />
               <Input
                 className="pl-10 w-full text-lg text-white bg-white/20 border-0 rounded-lg py-3 px-10 focus:outline-none focus:ring-2 focus:ring-white/50 placeholder-gray-300"
                 type="password"
@@ -94,7 +94,7 @@ const SignIn = () => {
               {errors.password && <p className="text-sm text-red-500 mt-1">{errors.password.message}</p>}
             </div>
 
-            <Button className="w-full text-xl py-6 mt-4 bg-gradient-to-r from-purple-700 to-purple-600 text-white rounded-lg hover:from-purple-700 hover:to-purple-600  focus:outline-none focus:ring-2 focus:ring-teal-500 transition-all duration-300 ease-in-out transform hover:scale-105">
+            <Button className="w-full text-xl py-6 mt-4 bg-green-500 hover:bg-green-600 text-gray-900  focus:outline-none focus:ring-2 focus:ring-teal-500 transition-all duration-300 ease-in-out transform hover:scale-105">
               Sign In
             </Button>
           </form>
