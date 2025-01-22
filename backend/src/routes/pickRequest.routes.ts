@@ -9,7 +9,7 @@ router.route("/make-pickup-request").post(
     upload.single("img"),
     makePickUprequest)
 
-router.route("/get-pickup-request").get(verifyJwt , getPickUpRequest)
+router.route("/get-pickup-request").get(verifyJwt,  getPickUpRequest)
     
 
 
