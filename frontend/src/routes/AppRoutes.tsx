@@ -24,9 +24,7 @@ const AppRoutes = () => {
           <Route path="/home" element={<HomePage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/pickup-request" element={<PickupRequestPage />} />
-
-          <Route path="/price-calculator" element={<PriceCalculator/>} />
-
+          <Route path="/pricing" element={<PriceCalculator/>} />
           <Route path="about" element={ <AboutPage/> }/>
           <Route path="/collector" element={ <CollectorDashboard/> }/>
 

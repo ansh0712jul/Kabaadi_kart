@@ -26,9 +26,9 @@ export default function Header({buttonText, navigateTo}: {buttonText?: string, n
         </a>
         <nav>
           <ul className="flex space-x-6">
-            <li><a href="/" className="text-gray-300 hover:text-white transition-colors">Home</a></li>
+            <li><a href="/home" className="text-gray-300 hover:text-white transition-colors">Home</a></li>
            
-            <li><a href="/services" className="text-gray-300 hover:text-white transition-colors">Pricing</a></li>
+            <li><a href="/pricing" className="text-gray-300 hover:text-white transition-colors">Pricing</a></li>
             <li><a href="/contact" className="text-gray-300 hover:text-white transition-colors">Contact</a></li>
             <li><a href="/profile" className="text-gray-300 hover:text-white transition-colors">Profile</a></li>
           </ul>
