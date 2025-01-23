@@ -91,3 +91,55 @@ export const registerCollector = asyncHandler(async(req:Request , res:Response)=
 })
 
 // login endpoint 
+
+export const loginCollector = asyncHandler(async(req:Request , res:Response) => {
+    
+    const {collectorEmail , password} = req.body;
+
+    if(!collectorEmail && !password){
+        throw new ApiError(400 , "username or password is required");
+    }
+
+    const loggedInCollector = await Collector.findOne({
+        collectorEmail
+    })
+
+    if(!loggedInCollector){
+        throw new ApiError(404 , "Collector does not exist");
+    }
+
+    const isValidPassword = await loggedInCollector.isPasswordCorrect(password);
+
+    if(!isValidPassword){
+        throw new ApiError(401 , "Invalid collector credentials");
+    }
+
+    const { accessToken , refreshToken} = await generateAccessAndRefreshToken(loggedInCollector._id)
+    .catch((error) => {
+        throw new ApiError(500, "something went wrong while generating tokens ");   
+    })
+
+    const collector = await Collector.findById(loggedInCollector._id).select("-password -refreshToken");
+
+    // sending cookies
+
+    const options = {
+        httpOnly : true,
+        secure : true,
+    }
+
+    return res
+    .status(200)
+    .cookie("accessToken" , accessToken , options)
+    .cookie("refreshToken" , refreshToken , options)
+    .json(
+        new ApiResponse(200 , 
+            {
+                collector,
+                accessToken,
+                refreshToken
+            },
+            "Collector logged in successfully"
+        )
+    )
+})
