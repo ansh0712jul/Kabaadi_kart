@@ -79,15 +79,15 @@ function RequestDetails({ request, onClose }: { request: Request; onClose: () =>
           {!request.status && <Button size="sm">Accept</Button>}
           {request.status && (
             <>
-              <Button size="sm" variant="outline">
+              <Button size="lg" variant="outline" className="bg-green-700 hover:text-green-600">
                 Complete
               </Button>
-              <Button size="sm" variant="outline">
+              <Button size="lg" variant="outline" className="bg-green-700 hover:text-green-600">
                 Cancel
               </Button>
             </>
           )}
-          <Button size="sm" variant="secondary" onClick={onClose}>
+          <Button size="lg" variant="secondary" className="bg-green-700 hover:text-green-600" onClick={onClose}>
             Close
           </Button>
         </div>
@@ -104,7 +104,7 @@ export default function CollectorDashboard() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-100">
+    <div className="min-h-screen flex flex-col bg-gray-800">
       <nav className="fixed top-0 left-0 right-0 z-50 bg-gray-900/80 backdrop-blur-xl">
       <div className="container mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
@@ -127,41 +127,41 @@ export default function CollectorDashboard() {
     </nav>
 
       <main className="flex-grow container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-8 mt-16">Collector Dashboard</h1>
+        <h1 className="text-3xl font-bold mb-8 mt-16 text-green-500">Collector Dashboard</h1>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {/* Collector Information */}
-          <Card className="col-span-full lg:col-span-1">
+          <Card className="col-span-full lg:col-span-1 bg-gray-800  ">
             <CardHeader>
-              <CardTitle>Personal Information</CardTitle>
+              <CardTitle className="text-green-700">Personal Information</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 <div>
-                  <Label htmlFor="name">Name</Label>
-                  <Input id="name" value={collectorInfo.name} readOnly />
+                  <Label htmlFor="name" className="text-green-700">Name</Label>
+                  <Input className="bg-gray-600" id="name" value={collectorInfo.name} readOnly />
                 </div>
                 <div>
-                  <Label htmlFor="email">Email</Label>
-                  <Input id="email" value={collectorInfo.email} readOnly />
+                  <Label htmlFor="email" className="text-green-700">Email</Label>
+                  <Input id="email" className="bg-gray-600"  value={collectorInfo.email} readOnly />
                 </div>
                 <div>
-                  <Label htmlFor="phone">Phone</Label>
-                  <Input id="phone" value={collectorInfo.phone} readOnly />
+                  <Label htmlFor="phone" className="text-green-700">Phone</Label>
+                  <Input id="phone" className="bg-gray-600"  value={collectorInfo.phone} readOnly />
                 </div>
                 <div>
-                  <Label htmlFor="address">Address</Label>
-                  <Input id="address" value={collectorInfo.address} readOnly />
+                  <Label htmlFor="address" className="text-green-700">Address</Label>
+                  <Input id="address" className="bg-gray-600"  value={collectorInfo.address} readOnly />
                 </div>
-                <Button className="w-full">Edit Profile</Button>
+                <Button className="w-full bg-green-600">Edit Profile</Button>
               </div>
             </CardContent>
           </Card>
 
           {/* Upcoming Requests */}
-          <Card className="col-span-full lg:col-span-1">
+          <Card className="col-span-full lg:col-span-1 bg-gray-800">
             <CardHeader>
-              <CardTitle>Upcoming Requests</CardTitle>
+              <CardTitle className="text-green-700">Upcoming Requests</CardTitle>
             </CardHeader>
             <CardContent>
               <ul className="space-y-4">
@@ -176,7 +176,7 @@ export default function CollectorDashboard() {
                       <p className="text-sm text-gray-600">{request.date}</p>
                       <p className="text-sm">{request.items}</p>
                     </div>
-                    <Button size="sm">View</Button>
+                    <Button size="lg" className=" bg-green-600 hover:bg-green-600">View</Button>
                   </li>
                 ))}
               </ul>
@@ -184,9 +184,9 @@ export default function CollectorDashboard() {
           </Card>
 
           {/* Accepted Requests */}
-          <Card className="col-span-full lg:col-span-1">
+          <Card className="col-span-full lg:col-span-1 bg-gray-800">
             <CardHeader>
-              <CardTitle>Accepted Requests</CardTitle>
+              <CardTitle className="text-green-700">Accepted Requests</CardTitle>
             </CardHeader>
             <CardContent>
               <ul className="space-y-4">
@@ -203,7 +203,7 @@ export default function CollectorDashboard() {
                         <p className="text-sm">{request.items}</p>
                         <p className="text-sm font-medium mt-1">Status: {request.status}</p>
                       </div>
-                      <Button size="sm" variant="outline">
+                      <Button size="lg" variant="outline" className="bg-green-600 hover:bg-green-600">
                         View
                       </Button>
                     </div>
@@ -215,7 +215,13 @@ export default function CollectorDashboard() {
         </div>
 
         {/* Request Details */}
-        {selectedRequest && <RequestDetails request={selectedRequest} onClose={() => setSelectedRequest(null)} />}
+        {
+          selectedRequest && 
+            <RequestDetails 
+              request={selectedRequest} 
+              onClose={() => setSelectedRequest(null)} 
+            />
+        }
       </main>
 
       <Footer />
