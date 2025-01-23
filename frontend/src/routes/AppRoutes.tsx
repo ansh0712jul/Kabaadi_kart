@@ -7,6 +7,7 @@ import { Route, Routes, BrowserRouter } from "react-router-dom";
 import { UserProvider } from "@/contexts/UserContext";
 import PickupRequestPage from "@/pages/PickupRequestPage";
 import AboutPage from "@/pages/AboutPage";
+import CollectorDashboard from "@/pages/Collector";
 
 const AppRoutes = () => {
   return (
@@ -20,6 +21,7 @@ const AppRoutes = () => {
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/pickup-request" element={<PickupRequestPage />} />
           <Route path="about" element={ <AboutPage/> }/>
+          <Route path="/collector" element={ <CollectorDashboard/> }/>
         </Routes>
       </UserProvider>
     </BrowserRouter>
