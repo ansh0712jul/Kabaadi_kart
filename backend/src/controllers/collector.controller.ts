@@ -175,3 +175,75 @@ export const logoutCollector = asyncHandler(async(req:AuthenticatedRequest , res
         new ApiResponse(200,{} , "user logged out successfully")
     )
 })
+
+// endpoint to refresh access token 
+
+export const refreshAccessToken = asyncHandler( async(req:AuthenticatedRequest , res:Response) =>{
+
+    const IncomingRefreshToken = req.cookies?.refreshToken || req.headers["authorization"]?.split(" ")[1] || req.body.refreshToken;
+
+    if(!IncomingRefreshToken){
+        throw new ApiError(401 , "Unauthorized access");
+
+    }
+
+    try {
+        const decodedToken = jwt.verify(IncomingRefreshToken , process.env.REFRESH_TOKEN_SECRET as string) as JwtPayload;
+
+        const user = await Collector.findById(decodedToken._id);
+
+        if(!user){
+            throw new ApiError(401," Invalid Refresh token  ");
+        }
+
+        if(user.refreshToken !== IncomingRefreshToken){
+            throw new ApiError(401 , " Refresh token has expirred or in used")
+        }
+
+        const { accessToken , refreshToken } = await generateAccessAndRefreshToken(user._id);
+
+        const options = {
+            httpOnly : true,
+            secure : true
+        }
+
+        return res
+        .status(200)
+        .cookie("accessToken" , accessToken , options)
+        .cookie("refreshToken" , refreshToken, options)
+        .json(
+            new ApiResponse(200,{
+                accessToken,
+                refreshToken
+            },
+            "Access token refreshed successfully")
+        )
+    } catch (error : any) {
+        throw new ApiError(500, error?.message ||  "somehting went wrong while refreshing access token");
+    }
+})
+
+// endpoint to get a collector by emial
+
+export const getCollectorByEmail = asyncHandler(async(req:Request , res:Response) => {
+
+    const { collectorEmail } = req.body;
+
+    if(!collectorEmail){
+        throw new ApiError(400 , "Collector email is required");
+    }
+
+    const collector = await Collector.findOne({
+        collectorEmail
+    }).select("-password -refreshToken")
+
+    if(!collector){
+        throw new ApiError(404 , "Collector not found");
+    }
+    
+    return res
+    .status(200)
+    .json(
+        new ApiResponse(200 , collector , "Collector found successfully")
+    )
+})
