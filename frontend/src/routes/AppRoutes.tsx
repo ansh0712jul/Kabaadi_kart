@@ -7,10 +7,9 @@ import { Route, Routes, BrowserRouter } from "react-router-dom";
 import { UserProvider } from "@/contexts/UserContext";
 import PickupRequestPage from "@/pages/PickupRequestPage";
 import AboutPage from "@/pages/AboutPage";
-
 import PriceCalculator from "@/pages/PriceCalculator";
-
 import CollectorDashboard from "@/pages/Collector";
+import CollectorSignUp from "@/pages/CollectorSignUp";
 
 
 const AppRoutes = () => {
@@ -27,6 +26,7 @@ const AppRoutes = () => {
           <Route path="/pricing" element={<PriceCalculator/>} />
           <Route path="about" element={ <AboutPage/> }/>
           <Route path="/collector" element={ <CollectorDashboard/> }/>
+          <Route path = "/collector/sign-up" element={ <CollectorSignUp/>}/>
 
         </Routes>
       </UserProvider>
