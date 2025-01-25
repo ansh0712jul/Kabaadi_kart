@@ -9,6 +9,7 @@ import axios from "axios"
 import { LogOut, User, Calendar, Package } from "lucide-react"
 import RequestDetails from "./RequestDetails"
 import Footer from "@/components/ui/Footer"
+import { useNavigate } from "react-router-dom"
 
 
 
@@ -50,11 +51,31 @@ export interface ICollector {
 export default function CollectorDashboard() {
   const [selectedRequest, setSelectedRequest] = useState<Request | null>(null)
   const [collector, setCollector] = useState<ICollector>({} as ICollector)
- 
+  const navigate = useNavigate();
 
   const handleRequestClick = (request: Request) => {
     setSelectedRequest(request)
   }
+
+  const logout = async () => {
+    try {
+        const token = localStorage.getItem('accessToken')
+
+        await axios.post('http://localhost:8068/collector/logout',{},{
+          headers :{
+            'Authorization': `Bearer ${token}`
+          }
+        })
+
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('collector');
+        
+        navigate("/collector/sign-in")
+
+    } catch (error) {
+        console.error("Logout error:", error);
+    }
+};
 
   useEffect(() => {
     const collector = localStorage.getItem('collector');
@@ -100,7 +121,9 @@ export default function CollectorDashboard() {
               </a>
             </nav>
           </div>
-          <Button variant="outline" size="sm" className="ml-auto">
+          <Button 
+          onClick={logout}
+          variant="outline" size="sm" className="ml-auto">
             <LogOut className="mr-2 h-4 w-4" />
             Logout
           </Button>

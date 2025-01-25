@@ -10,7 +10,7 @@ import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { Input } from "@/components/ui/input";
 import { Mail, Lock } from 'lucide-react';
 import "../App.css";
-import { json } from 'stream/consumers';
+
 
 const signInSchema = z.object({
   collectorEmail: z.string().email({ message: 'Invalid email format' }).nonempty('Email is required'),
