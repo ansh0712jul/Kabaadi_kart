@@ -10,6 +10,7 @@ import AboutPage from "@/pages/AboutPage";
 import PriceCalculator from "@/pages/PriceCalculator";
 import CollectorDashboard from "@/pages/Collector";
 import CollectorSignUp from "@/pages/CollectorSignUp";
+import CollectorSignIn from "@/pages/CollectorSignIn";
 
 
 const AppRoutes = () => {
@@ -25,9 +26,9 @@ const AppRoutes = () => {
           <Route path="/pickup-request" element={<PickupRequestPage />} />
           <Route path="/pricing" element={<PriceCalculator/>} />
           <Route path="about" element={ <AboutPage/> }/>
-          <Route path="/collector" element={ <CollectorDashboard/> }/>
+          <Route path="/collector-dashboard" element={ <CollectorDashboard/> }/>
           <Route path = "/collector/sign-up" element={ <CollectorSignUp/>}/>
-
+          <Route path = "/collector/sign-in" element={ <CollectorSignIn/>}/>
         </Routes>
       </UserProvider>
     </BrowserRouter>

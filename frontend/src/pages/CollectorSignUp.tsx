@@ -2,13 +2,14 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { Link } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { Mail, User, Lock, Smartphone, LandPlot, MapPinIcon as MapPinHouse } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { motion } from "framer-motion"
+import axios from "axios"
 
 const CollectorSignUpSchema = z.object({
   collectorName: z
@@ -34,6 +35,8 @@ const CollectorSignUpSchema = z.object({
 type CollectorSignUpFormData = z.infer<typeof CollectorSignUpSchema>
 
 const CollectorSignUp = () => {
+
+  const navigate = useNavigate();
   const [serviceAreaInput, setServiceAreaInput] = useState("")
   const [serviceAreas, setServiceAreas] = useState<string[]>([])
 
@@ -63,6 +66,13 @@ const CollectorSignUp = () => {
 
   const onSubmit = async (data: CollectorSignUpFormData) => {
     console.log(data)
+    try {
+        await axios.post('http://localhost:8068/collector/sign-up', data);
+        console.log(data);
+        
+    } catch (error) {
+        console.error(error);
+    }
   }
 
   return (
@@ -161,12 +171,12 @@ const CollectorSignUp = () => {
           <CardFooter className="text-center">
             <p className="text-lg text-gray-200">
               Already have an account?{" "}
-              <Link
-                to="/sign-in"
-                className="text-white font-semibold underline hover:text-green-200 transition-colors duration-300"
+              <span
+              onClick={() => navigate("/collector/sign-in")}
+              className="text-white font-semibold underline hover:text-green-200 transition-colors duration-300 cursor-pointer"
               >
-                Sign In
-              </Link>
+                Sign in
+              </span>
             </p>
           </CardFooter>
         </Card>
