@@ -1,22 +1,17 @@
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { ScrollArea } from "@/components/ui/scroll-area"
-
+import axios from "axios"
 import { LogOut, User, Calendar, Package } from "lucide-react"
 import RequestDetails from "./RequestDetails"
 import Footer from "@/components/ui/Footer"
 
-// Mock data (replace with actual data fetching in a real application)
-const collectorInfo = {
-  name: "John Doe",
-  email: "john@example.com",
-  phone: "+1 234 567 8900",
-  address: "123 Collector St, City, Country",
-}
+
+
 
 const upcomingRequests = [
   { id: 1, client: "Alice", date: "2023-06-15", items: "Paper, Plastic" },
@@ -38,12 +33,52 @@ type Request = {
   status?: string
 }
 
+export interface IServiceArea {
+  city: string;
+  _id: string;
+}
+
+export interface ICollector {
+  _id: string;
+  collectorName: string;
+  collectorEmail: string;
+  collectorPhn: string;
+  location: string;
+  serviceAreas: IServiceArea[];
+}
+
 export default function CollectorDashboard() {
   const [selectedRequest, setSelectedRequest] = useState<Request | null>(null)
+  const [collector, setCollector] = useState<ICollector>({} as ICollector)
+ 
 
   const handleRequestClick = (request: Request) => {
     setSelectedRequest(request)
   }
+
+  useEffect(() => {
+    const collector = localStorage.getItem('collector');
+    const parsedcollector = collector? JSON.parse(collector) : null;
+    const email = parsedcollector?.email
+  
+    const token = localStorage.getItem('accessToken')
+    
+     axios.get('http://localhost:8068/collector/get-collector', {
+      headers:{
+        'Authorization': `Bearer ${token}`
+      },
+      params: {collectorEmail: email}
+    }).then((response) => {
+      setCollector(response.data.data)
+      console.log(collector);
+      
+    }).catch((error) => {
+      console.log(error);
+    })
+  },[])
+  
+
+  
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-950 text-green-400">
@@ -77,7 +112,11 @@ export default function CollectorDashboard() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {/* Collector Information */}
-          <Card className="col-span-full lg:col-span-1 bg-gray-900 border-gray-800">
+          
+          {
+            collector && (
+              
+                <Card className="col-span-full lg:col-span-1 bg-gray-900 border-gray-800">
             <CardHeader>
               <CardTitle className="text-green-400 flex items-center">
                 <User className="mr-2" />
@@ -92,8 +131,8 @@ export default function CollectorDashboard() {
                   </Label>
                   <Input
                     id="name"
-                    value={collectorInfo.name}
                     readOnly
+                    value={collector.collectorName}
                     className="bg-gray-800 border-gray-700 text-green-400"
                   />
                 </div>
@@ -103,7 +142,7 @@ export default function CollectorDashboard() {
                   </Label>
                   <Input
                     id="email"
-                    value={collectorInfo.email}
+                    value={collector.collectorEmail}
                     readOnly
                     className="bg-gray-800 border-gray-700 text-green-400"
                   />
@@ -114,26 +153,39 @@ export default function CollectorDashboard() {
                   </Label>
                   <Input
                     id="phone"
-                    value={collectorInfo.phone}
+                    value={collector.collectorPhn}
                     readOnly
                     className="bg-gray-800 border-gray-700 text-green-400"
                   />
                 </div>
                 <div>
                   <Label htmlFor="address" className="text-green-400">
-                    Address
+                    Location
                   </Label>
                   <Input
                     id="address"
-                    value={collectorInfo.address}
+                    value={collector.location}
                     readOnly
                     className="bg-gray-800 border-gray-700 text-green-400"
                   />
                 </div>
+                <div>
+                  <Label htmlFor="serviceAreas" className="text-green-400">
+                    Service Areas
+                  </Label>
+                  <ul className="text-green-400 px-2 py-4 min-h-[100px] w-full max-h-[240px]   md:grid md:grid-cols-4 rounded ">
+                    {collector.serviceAreas.map((area) => (
+                      <li className="p-2 w-fit h-8 flex items-center justify-center bg-gray-800 gap-3 rounded" key={area._id}>{area.city}</li>
+                    ))}
+                  </ul>
+                </div>
+
                 <Button className="w-full bg-green-600 hover:bg-green-700 text-white">Edit Profile</Button>
               </div>
             </CardContent>
           </Card>
+              )
+          }
 
           {/* Upcoming Requests */}
           <Card className="col-span-full lg:col-span-1 bg-gray-900 border-gray-800">

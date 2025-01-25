@@ -38,8 +38,6 @@ const SignIn = () => {
       localStorage.setItem('accessToken', accessToken);
       localStorage.setItem('refreshToken', refreshToken);
 
-
-      console.log("user "+ JSON.stringify(user));
       const user1 = {
         name: user.username,
         email: user.email,
@@ -49,8 +47,8 @@ const SignIn = () => {
 
       setUser(user1); // Set user details in context
 
-      console.log('Login successful');
       navigate('/profile'); // Redirect to profile page
+
     } catch (error) {
       console.error(error);
       // Handle error (e.g., show error message)
