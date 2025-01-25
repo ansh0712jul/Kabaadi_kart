@@ -56,13 +56,9 @@ const collectorSchema = new Schema<ICollector>({
     },
     serviceAreas:[
         {
-            pinCode:{
+            city: {
                 type: String,
-                required:[true, "Pincode is required"],
-            },
-            city:{
-                type: String,
-                required:[true, "City is required"],
+                required: [true, "City is required"],
             }
         }
     ]

@@ -48,11 +48,8 @@ export const registerCollector = asyncHandler(async(req:Request , res:Response)=
         throw new ApiError(400 , "Service areas are required");
     }
 
-    serviceAreas.forEach((area : {pinCode : string , city : string}) => {
-        if(!area.pinCode || area.pinCode.trim() === ''){
-            throw new ApiError(400 , "Pincode is required");
-        }
-
+    serviceAreas.forEach((area : { city : string}) => {
+    
         if(!area.city || area.city.trim() === ''){
             throw new ApiError(400 , "Location is required");
         }
@@ -227,7 +224,7 @@ export const refreshAccessToken = asyncHandler( async(req:AuthenticatedRequest ,
 
 export const getCollectorByEmail = asyncHandler(async(req:Request , res:Response) => {
 
-    const { collectorEmail } = req.body;
+    const { collectorEmail } = req.query;
 
     if(!collectorEmail){
         throw new ApiError(400 , "Collector email is required");

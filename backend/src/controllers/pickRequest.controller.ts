@@ -110,6 +110,25 @@ export const getPickUpRequest = asyncHandler(async (req: AuthenticatedRequest, r
   res.status(200).json(new ApiResponse(200, request, "Pick-up request found successfully"));
 });
 
+// endpoint to get all pick up rrequest whose status is pending 
+
+export const getAllPickUpRequest  = asyncHandler( async(req , res) =>{
+
+  const request = await PickRequest.find({
+    status : "Pending"
+  })
+
+  if(!request){
+    throw new ApiError(404 , "Pick-up request not found");
+
+  }
+
+  return res
+  .status(200)
+  .json(
+    new ApiResponse(200 , request , "Pick-up request found successfully")
+  )
+})
 
 // endpoint to accept pick-up request 
 
