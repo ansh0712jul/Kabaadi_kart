@@ -7,21 +7,39 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
+import axios from "axios"
+import { IPickRequest } from "./Collector"
+import { useState } from "react"
 
-type Request = {
-  id: number
-  client: string
-  date: string
-  items: string
-  status?: string
-}
+
 
 type RequestDetailsProps = {
-  request: Request
+  request: IPickRequest
   onClose: () => void
 }
 
 export default function RequestDetails({ request, onClose }: RequestDetailsProps) {
+  const [approved , setApproved] = useState(false)
+  const acceptRequestHandler = () =>{
+  const token = localStorage.getItem("accessToken")
+  if(!token){
+    throw new Error("No token found")
+  }
+  console.log(token);
+  
+    axios.patch(`http://localhost:8068/request/pickup-request/${request._id}/accept`,{}, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+     
+    }).then((res) => {
+      console.log("Approved successfully",res)
+      setApproved(true)
+      
+    }).catch((err) => {
+      console.log(err)
+    })
+  }
   return (
     <Dialog open={true} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[425px] bg-gray-900 text-green-400">
@@ -32,15 +50,15 @@ export default function RequestDetails({ request, onClose }: RequestDetailsProps
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
             <span className="text-right font-medium col-span-1">Client:</span>
-            <span className="col-span-3">{request.client}</span>
+            <span className="col-span-3">{request.name}</span>
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <span className="text-right font-medium col-span-1">Date:</span>
-            <span className="col-span-3">{request.date}</span>
+            <span className="col-span-3">{request.pickUpDate}</span>
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <span className="text-right font-medium col-span-1">Items:</span>
-            <span className="col-span-3">{request.items}</span>
+            <span className="col-span-3">{request.category}</span>
           </div>
           {request.status && (
             <div className="grid grid-cols-4 items-center gap-4">
@@ -50,7 +68,17 @@ export default function RequestDetails({ request, onClose }: RequestDetailsProps
           )}
         </div>
         <DialogFooter>
-          <Button type="button" variant="secondary" onClick={onClose}>
+        {
+          approved ? null : 
+          <Button 
+        onClick={() => acceptRequestHandler()}
+        className="bg-green-400" type="button" variant="secondary" >
+            
+               Accept Request
+            
+          </Button>
+        }
+          <Button className="bg-red-400" type="button" variant="secondary" onClick={onClose}>
             Close
           </Button>
         </DialogFooter>

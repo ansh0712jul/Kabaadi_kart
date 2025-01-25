@@ -14,11 +14,7 @@ import { useNavigate } from "react-router-dom"
 
 
 
-const upcomingRequests = [
-  { id: 1, client: "Alice", date: "2023-06-15", items: "Paper, Plastic" },
-  { id: 2, client: "Bob", date: "2023-06-16", items: "Electronics, Metal" },
-  { id: 3, client: "Charlie", date: "2023-06-17", items: "Glass, Cardboard" },
-]
+
 
 const acceptedRequests = [
   { id: 4, client: "David", date: "2023-06-14", items: "Paper, Plastic", status: "In Progress" },
@@ -26,13 +22,7 @@ const acceptedRequests = [
   { id: 6, client: "Frank", date: "2023-06-12", items: "Electronics", status: "In Progress" },
 ]
 
-type Request = {
-  id: number
-  client: string
-  date: string
-  items: string
-  status?: string
-}
+
 
 export interface IServiceArea {
   city: string;
@@ -48,12 +38,27 @@ export interface ICollector {
   serviceAreas: IServiceArea[];
 }
 
-export default function CollectorDashboard() {
-  const [selectedRequest, setSelectedRequest] = useState<Request | null>(null)
-  const [collector, setCollector] = useState<ICollector>({} as ICollector)
-  const navigate = useNavigate();
+export interface IPickRequest{
+  _id:string,
+  email:string,
+  img:string,
+  name:string,
+  phone:string,
+  category:string[],
+  pickUpDate:string,
+  pickUpTime:string,
+  sellOrDonate : 'Sell' | 'Donate',
+  status : 'Pending' | 'Approved' | 'Completed' | 'Cancelled',
+}
 
-  const handleRequestClick = (request: Request) => {
+export default function CollectorDashboard() {
+  const [selectedRequest, setSelectedRequest] = useState<IPickRequest | null >()
+  const [collector, setCollector] = useState<ICollector>({} as ICollector)
+  const [pickRequests, setPickRequests] = useState<IPickRequest[]>([])
+
+  const navigate = useNavigate();
+  
+  const handleRequestClick = (request: IPickRequest) => {
     setSelectedRequest(request)
   }
 
@@ -91,13 +96,27 @@ export default function CollectorDashboard() {
       params: {collectorEmail: email}
     }).then((response) => {
       setCollector(response.data.data)
-      console.log(collector);
-      
+     
     }).catch((error) => {
       console.log(error);
     })
   },[])
-  
+
+  useEffect(() => {
+
+    const token = localStorage.getItem('accessToken')
+    axios.get('http://localhost:8068/request/collector/get-pickup-request', {
+      headers : {
+        'Authorization': `Bearer ${token}`
+      }
+    }).then((response) => {
+      setPickRequests(response.data.data)
+      console.log("all request",pickRequests);
+    }).then((error) => {
+      console.log(error);
+    })
+    
+  },[])
 
   
 
@@ -197,9 +216,10 @@ export default function CollectorDashboard() {
                     Service Areas
                   </Label>
                   <ul className="text-green-400 px-2 py-4 min-h-[100px] w-full max-h-[240px]   md:grid md:grid-cols-4 rounded ">
-                    {collector.serviceAreas.map((area) => (
+                    { collector.serviceAreas && collector.serviceAreas.map((area) => (
                       <li className="p-2 w-fit h-8 flex items-center justify-center bg-gray-800 gap-3 rounded" key={area._id}>{area.city}</li>
-                    ))}
+                    ))
+                    }
                   </ul>
                 </div>
 
@@ -219,19 +239,20 @@ export default function CollectorDashboard() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <ScrollArea className="h-[300px] pr-4">
+              <ScrollArea className="h-[500px] pr-4">
                 <ul className="space-y-4">
-                  {upcomingRequests.map((request) => (
+                  { pickRequests && pickRequests.map((request ) => (
                     <li
-                      key={request.id}
+                      key={request._id}
                       className="flex items-center justify-between p-3 bg-gray-800 rounded-lg cursor-pointer hover:bg-gray-700 transition-colors"
-                      onClick={() => handleRequestClick(request)}
+                      onClick={() => handleRequestClick(request )}
                     >
                       <div>
-                        <p className="font-semibold text-green-400">{request.client}</p>
-                        <p className="text-sm text-gray-400">{request.date}</p>
-                        <p className="text-sm text-gray-300">{request.items}</p>
+                        <p className="font-semibold text-green-400">{request.name}</p>
+                        <p className="text-sm text-gray-400">{request.pickUpDate}</p>
+                        <p className="text-sm text-gray-300">{request.pickUpTime}</p>
                       </div>
+                      
                       <Button size="sm" className="bg-green-600 hover:bg-green-700 text-white">
                         View
                       </Button>
@@ -251,13 +272,13 @@ export default function CollectorDashboard() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <ScrollArea className="h-[300px] pr-4">
+              <ScrollArea className="h-[500px] pr-4">
                 <ul className="space-y-4">
                   {acceptedRequests.map((request) => (
                     <li
                       key={request.id}
                       className="p-3 bg-gray-800 rounded-lg cursor-pointer hover:bg-gray-700 transition-colors"
-                      onClick={() => handleRequestClick(request)}
+                      // onClick={() => handleRequestClick(request)}
                     >
                       <div className="flex justify-between items-start mb-2">
                         <div>
