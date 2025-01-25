@@ -7,9 +7,10 @@ import { Label } from "@/components/ui/label"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import axios from "axios"
 import { LogOut, User, Calendar, Package } from "lucide-react"
-import RequestDetails from "./RequestDetails"
+import RequestDetails, { arr } from "./RequestDetails"
 import Footer from "@/components/ui/Footer"
 import { useNavigate } from "react-router-dom"
+
 
 
 
@@ -117,6 +118,7 @@ export default function CollectorDashboard() {
     })
     
   },[])
+
 
   
 
@@ -304,7 +306,7 @@ export default function CollectorDashboard() {
         </div>
 
         {/* Request Details */}
-        {selectedRequest && <RequestDetails request={selectedRequest} onClose={() => setSelectedRequest(null)} />}
+        {selectedRequest && <RequestDetails request={selectedRequest} onClose={() => setSelectedRequest(null) } />}
       </main>
 
       <Footer />

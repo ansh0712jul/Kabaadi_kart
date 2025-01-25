@@ -18,8 +18,10 @@ type RequestDetailsProps = {
   onClose: () => void
 }
 
+
+
 export default function RequestDetails({ request, onClose }: RequestDetailsProps) {
-  const [approved , setApproved] = useState(false)
+  const [approved , setApproved] = useState<IPickRequest[]>([])
   const acceptRequestHandler = () =>{
   const token = localStorage.getItem("accessToken")
   if(!token){
@@ -33,8 +35,10 @@ export default function RequestDetails({ request, onClose }: RequestDetailsProps
       },
      
     }).then((res) => {
-      console.log("Approved successfully",res)
-      setApproved(true)
+      
+      setApproved((prev) => ([...prev , res.data.data]))
+      window.location.reload();
+      
       
     }).catch((err) => {
       console.log(err)
@@ -69,7 +73,7 @@ export default function RequestDetails({ request, onClose }: RequestDetailsProps
         </div>
         <DialogFooter>
         {
-          approved ? null : 
+          approved && approved.find((item) => item._id === request._id) ? null : 
           <Button 
         onClick={() => acceptRequestHandler()}
         className="bg-green-400" type="button" variant="secondary" >
