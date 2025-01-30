@@ -120,6 +120,20 @@ export default function CollectorDashboard() {
   },[])
 
 
+  // get accepted or completed pickup rrequest 
+
+  useEffect(() => {
+    axios.get('http://localhost:8068/request/pickup-request/get-accepted-or-completed')
+    .then((response) => {
+      console.log(response)
+    })
+    .catch((error) => {
+      console.log(error);
+      
+    })
+    
+  })
+
   
 
   return (

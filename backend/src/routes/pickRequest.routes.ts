@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { acceptPickUpRequest, cancelPickUpRequest, completePickUpRequest, getAllPickUpRequest, getPickUpRequest, makePickUprequest } from "../controllers/pickRequest.controller";
+import { acceptPickUpRequest, cancelPickUpRequest, completePickUpRequest, getAcceptedOrCompletedPickUpRequest, getAllPickUpRequest, getPickUpRequest, makePickUprequest } from "../controllers/pickRequest.controller";
 import { verifyJwt } from "../middleware/auth.middleware";
 import { upload } from "../middleware/multer.middleware";
 import { verifyCollectorJwt } from "../middleware/authC.middleware";
@@ -15,6 +15,7 @@ router.route("/collector/get-pickup-request").get(verifyCollectorJwt,  getAllPic
 router.route("/pickup-request/:requestId/accept").patch(verifyCollectorJwt, acceptPickUpRequest)
 router.route("/pickup-request/:requestId/complete").patch(verifyCollectorJwt, completePickUpRequest)
 router.route("/pickup-request/:requestId/reject").patch(verifyCollectorJwt, cancelPickUpRequest)
+router.route("/pickup-request/get-accepted-or-completed").get( getAcceptedOrCompletedPickUpRequest)
     
 
 

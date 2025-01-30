@@ -214,6 +214,27 @@ export const completePickUpRequest = asyncHandler(async (req: AuthenticatedReque
 
 })
 
+// endpoint to getAcceptedOrCompletedPickUpRequest
+
+export const getAcceptedOrCompletedPickUpRequest = asyncHandler(async (req: AuthenticatedRequestCollector, res: Response) => {
+   const request = await PickRequest.find({
+    $or: [
+      { status: "Approved" },
+      { status: "Completed" },
+    ]
+   })
+
+   if(!request){
+    throw new ApiError(404 , "Pick-up request not found");
+   }
+
+   return res
+   .status(200)
+   .json(
+     new ApiResponse(200 , request , "Pick-up request found successfully")
+   )
+})
+
 // endpoint to cancel accepted pick-up request
 
 export const cancelPickUpRequest = asyncHandler(async (req: AuthenticatedRequestCollector, res: Response) => {
