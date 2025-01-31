@@ -47,6 +47,7 @@ const ProfilePage: React.FC = () => {
         headers: {
           Authorization: `Bearer ${token}`,
         },
+        params:{ }
       })
       .then((res) => {
         setPickUpRequests(res.data.data)

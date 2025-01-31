@@ -26,10 +26,12 @@ app.use(cookieParser())
 // import routes using import 
 import userRoutes from "./routes/user.routes";
 import pickReuestRoutes from "./routes/pickRequest.routes"
+import collectorRoutes from "./routes/collector.routes"
 
 
 // routes declaration 
 app.use("/user",userRoutes)
 app.use("/request",pickReuestRoutes)
+app.use("/collector",collectorRoutes)
 
 export default app

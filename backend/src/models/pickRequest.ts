@@ -23,11 +23,11 @@ export interface IPickRequest extends Document{
     pickUpTime : string,
     category : string[],
     img?: string,
-    status : "Pending" | "Approved" | "Rejected",
-    acceptedBy?: mongoose.Types.ObjectId;
-    collectorName?: mongoose.Types.ObjectId;
-    collectorEmail?: mongoose.Types.ObjectId;
-    collectorPhn?: mongoose.Types.ObjectId;
+    status : "Pending" | "Approved" | "Completed" | "Cancelled",
+    acceptedBy?: string;
+    collectorName?: string;
+    collectorEmail?: string;
+    collectorPhn?: string;
 
 }
 // address schema 
@@ -107,24 +107,19 @@ const pickRequestSchema = new Schema<IPickRequest>({
     },
     status : {
         type : String,
-        enum : ["Pending","Accepted","Rejected"],
+        enum : ["Pending","Approved","Completed","Cancelled"],
         default : "Pending"       
     },
     acceptedBy : {
-        type : mongoose.Schema.Types.ObjectId,
-        ref : "Collector"
-    },
-    collectorName : {
-        type : mongoose.Schema.Types.ObjectId,
-        ref : "Collector"
+        type : String,
+        
     },
     collectorEmail : {
-        type : mongoose.Schema.Types.ObjectId,
-        ref : "Collector"
+        type : String,
     },
     collectorPhn : {
-        type : mongoose.Schema.Types.ObjectId,
-        ref : "Collector"
+        type : String
+        
     }
     
     

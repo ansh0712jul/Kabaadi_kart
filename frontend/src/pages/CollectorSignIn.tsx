@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import axios from 'axios';
-import { Link,useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useUser } from '../contexts/UserContext';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
@@ -11,14 +11,15 @@ import { Input } from "@/components/ui/input";
 import { Mail, Lock } from 'lucide-react';
 import "../App.css";
 
+
 const signInSchema = z.object({
-  email: z.string().email({ message: 'Invalid email format' }).nonempty('Email is required'),
+  collectorEmail: z.string().email({ message: 'Invalid email format' }).nonempty('Email is required'),
   password: z.string().min(4, { message: 'Password must be at least 4 characters long' }).nonempty('Password is required'),
 });
 
 type SignInFormData = z.infer<typeof signInSchema>;
 
-const SignIn = () => {
+const CollectorSignIn = () => {
   const navigate = useNavigate();
   const { setUser } = useUser();
 
@@ -31,24 +32,30 @@ const SignIn = () => {
   });
 
   const handleLogin = async (data: SignInFormData) => {
+    
     try {
-      const response = await axios.post('http://localhost:8068/user/sign-in', data);
-      const { accessToken, refreshToken, user } = response.data.data;
+      const response = await axios.post('http://localhost:8068/collector/sign-in', data);
+      
+      const { accessToken, refreshToken,collector} = response.data.data;
 
       localStorage.setItem('accessToken', accessToken);
       localStorage.setItem('refreshToken', refreshToken);
 
-      const user1 = {
-        name: user.username,
-        email: user.email,
+      console.log("token  ->",accessToken);
+      
+
+      console.log("collector "+ JSON.stringify(collector));
+      const collector1 = {
+        name: collector.collectorName,
+        email: collector.collectorEmail,
       };
 
-      localStorage.setItem('user', JSON.stringify(user1));
+      localStorage.setItem('collector', JSON.stringify(collector1));
 
-      setUser(user1); // Set user details in context
+      // setUser(collector1); // Set user details in context
 
-      navigate('/profile'); // Redirect to profile page
-
+      console.log('Login successful');
+      navigate('/collector-dashboard'); // Redirect to profile page
     } catch (error) {
       console.error(error);
       // Handle error (e.g., show error message)
@@ -71,14 +78,14 @@ const SignIn = () => {
         <CardContent>
           <form onSubmit={handleSubmit(handleLogin)} className="space-y-6">
             <div className="relative">
-              <Mail className={`absolute left-3 top-1/2 transform -translate-y-1/2 text-green-300 ${errors.email ? 'top-1/3' : 'top-1/2'}`} />
+              <Mail className={`absolute left-3 top-1/2 transform -translate-y-1/2 text-green-300 ${errors.collectorEmail ? 'top-1/3' : 'top-1/2'}`} />
               <Input
                 className="pl-10 w-full text-lg text-white bg-white/20 border-0 rounded-lg py-3 px-10 focus:outline-none focus:ring-2 focus:ring-white/50 placeholder-gray-300"
                 type="text"
                 placeholder="Enter your email"
-                {...register("email")}
+                {...register("collectorEmail")}
               />
-              {errors.email && <p className="text-sm text-red-500 mt-1">{errors.email.message}</p>}
+              {errors.collectorEmail && <p className="text-sm text-red-500 mt-1">{errors.collectorEmail.message}</p>}
             </div>
 
             <div className="relative">
@@ -101,9 +108,11 @@ const SignIn = () => {
         <CardFooter className="mt-6 text-center">
           <p className="text-lg text-gray-200">
             Don't have an account?{" "}
-            <Link to="/sign-up" className="text-white font-semibold underline hover:text-teal-200 transition-colors duration-300">
-              Sign Up
-            </Link>
+            <span
+            onClick={() => navigate('/collector/sign-up')} 
+            className="text-white font-semibold underline hover:text-teal-200 transition-colors duration-300 cursor-pointer">
+                Sign Up
+            </span>
           </p>
         </CardFooter>
       </Card>
@@ -111,4 +120,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default CollectorSignIn;
