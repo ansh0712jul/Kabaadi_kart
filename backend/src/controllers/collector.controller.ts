@@ -4,6 +4,7 @@ import asyncHandler from "../utils/asyncHandler";
 import Collector , {ICollector} from "../models/collector.model";
 import { Request, Response } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
+import { PickRequest } from "../models/pickRequest";
 
 export interface AuthenticatedRequest extends Request {
     user?: ICollector
@@ -244,3 +245,19 @@ export const getCollectorByEmail = asyncHandler(async(req:Request , res:Response
         new ApiResponse(200 , collector , "Collector found successfully")
     )
 })
+
+export const acceptedPickUpRequest = asyncHandler(async(req:AuthenticatedRequest , res:Response) => {
+    
+    const collector = await PickRequest.find({collectorEmail: req.user?.collectorEmail});
+
+    if(!collector){
+        throw new ApiError(404 , "Collector not found");
+    }
+
+    res.status(200).json(new ApiResponse(200 , collector , "Request found successfully"));
+
+})
+
+
+
+

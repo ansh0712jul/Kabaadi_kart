@@ -7,23 +7,9 @@ import { Label } from "@/components/ui/label"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import axios from "axios"
 import { LogOut, User, Calendar, Package } from "lucide-react"
-import RequestDetails, { arr } from "./RequestDetails"
+import RequestDetails from "./RequestDetails"
 import Footer from "@/components/ui/Footer"
 import { useNavigate } from "react-router-dom"
-
-
-
-
-
-
-
-const acceptedRequests = [
-  { id: 4, client: "David", date: "2023-06-14", items: "Paper, Plastic", status: "In Progress" },
-  { id: 5, client: "Eve", date: "2023-06-13", items: "Metal", status: "Completed" },
-  { id: 6, client: "Frank", date: "2023-06-12", items: "Electronics", status: "In Progress" },
-]
-
-
 
 export interface IServiceArea {
   city: string;
@@ -56,6 +42,7 @@ export default function CollectorDashboard() {
   const [selectedRequest, setSelectedRequest] = useState<IPickRequest | null >()
   const [collector, setCollector] = useState<ICollector>({} as ICollector)
   const [pickRequests, setPickRequests] = useState<IPickRequest[]>([])
+  const [acceptedRequests, setAcceptedRequests] = useState<IPickRequest[]>([])
 
   const navigate = useNavigate();
   
@@ -117,6 +104,20 @@ export default function CollectorDashboard() {
       console.log(error);
     })
     
+  },[])
+
+  useEffect(() => {
+    const token = localStorage.getItem('accessToken')
+    axios.get('http://localhost:8068/collector/collector-acceptRequest',{
+      headers : {
+        'Authorization': `Bearer ${token}`
+      }
+    }).then((response) => {
+      setAcceptedRequests(response.data.data);
+      console.log("accepted request",acceptedRequests);
+    }).catch((error) => {
+      console.log(error);
+    })
   },[])
 
 
@@ -290,18 +291,17 @@ export default function CollectorDashboard() {
             <CardContent>
               <ScrollArea className="h-[500px] pr-4">
                 <ul className="space-y-4">
-                  {acceptedRequests.map((request) => (
+                  {acceptedRequests && acceptedRequests.map((request) => (
                     <li
-                      key={request.id}
+                      key={request._id}
                       className="p-3 bg-gray-800 rounded-lg cursor-pointer hover:bg-gray-700 transition-colors"
                       // onClick={() => handleRequestClick(request)}
                     >
                       <div className="flex justify-between items-start mb-2">
                         <div>
-                          <p className="font-semibold text-green-400">{request.client}</p>
-                          <p className="text-sm text-gray-400">{request.date}</p>
-                          <p className="text-sm text-gray-300">{request.items}</p>
-                          <p className="text-sm font-medium mt-1 text-green-500">Status: {request.status}</p>
+                          <p className="font-semibold text-green-400">{request.name}</p>
+                          <p className="text-sm text-gray-400">{request.pickUpDate}</p>
+                          <p className="text-sm text-gray-300">{request.pickUpTime}</p>
                         </div>
                         <Button
                           size="sm"
