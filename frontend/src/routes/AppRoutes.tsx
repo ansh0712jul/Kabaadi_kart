@@ -11,6 +11,7 @@ import PriceCalculator from "@/pages/PriceCalculator";
 import CollectorDashboard from "@/pages/Collector";
 import CollectorSignUp from "@/pages/CollectorSignUp";
 import CollectorSignIn from "@/pages/CollectorSignIn";
+import ContactPage from "@/pages/ContactPage";
 
 
 const AppRoutes = () => {
@@ -29,6 +30,7 @@ const AppRoutes = () => {
           <Route path="/collector-dashboard" element={ <CollectorDashboard/> }/>
           <Route path = "/collector/sign-up" element={ <CollectorSignUp/>}/>
           <Route path = "/collector/sign-in" element={ <CollectorSignIn/>}/>
+          <Route path = "/contact" element={ <ContactPage/>}/>
         </Routes>
       </UserProvider>
     </BrowserRouter>
