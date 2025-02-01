@@ -65,10 +65,11 @@ const CollectorSignUp = () => {
   }
 
   const onSubmit = async (data: CollectorSignUpFormData) => {
-    console.log(data)
+    console.log("from frontend ",data)
     try {
         await axios.post('http://localhost:8068/collector/sign-up', data);
         console.log(data);
+        navigate('/collector/sign-in');
         
     } catch (error) {
         console.error(error);

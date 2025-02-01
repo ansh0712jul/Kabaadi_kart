@@ -34,7 +34,7 @@ const generateAccessAndRefreshToken = async(userId:string): Promise<{accessToken
 // Registration endpoint
 
 export const registerCollector = asyncHandler(async(req:Request , res:Response)=>{
-
+   
     const {collectorName , collectorEmail,collectorPhn , password , location , serviceAreas} = req.body;
 
     // validating required fields 
@@ -45,17 +45,15 @@ export const registerCollector = asyncHandler(async(req:Request , res:Response)=
     }
     
     // validating service areas
-    if(!Array.isArray(serviceAreas) || serviceAreas.length === 0){
-        throw new ApiError(400 , "Service areas are required");
+    if (!Array.isArray(serviceAreas) || serviceAreas.length === 0) {
+        throw new ApiError(400, "At least one service area is required");
     }
-
-    serviceAreas.forEach((area : { city : string}) => {
     
-        if(!area.city || area.city.trim() === ''){
-            throw new ApiError(400 , "Location is required");
+    serviceAreas.forEach((area: string) => {
+        if (!area.trim()) {
+            throw new ApiError(400, "Service area cannot be empty");
         }
-
-    })
+    });
 
     const existedUser = await Collector.findOne({
         $or : [{collectorEmail} , {collectorPhn}]

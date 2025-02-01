@@ -54,12 +54,10 @@ const collectorSchema = new Schema<ICollector>({
         required: [true, "Location is required"],
         trim: true,
     },
-    serviceAreas:[
+    serviceAreas: [
         {
-            city: {
-                type: String,
-                required: [true, "City is required"],
-            }
+            type: String,
+            required: [true, "Service area is required"],
         }
     ]
 
