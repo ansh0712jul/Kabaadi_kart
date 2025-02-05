@@ -36,7 +36,7 @@ const AboutPage: React.FC = () => {
             </p>
             <Button 
               onClick={() => navigate('/sign-up')} className="bg-green-500 hover:bg-green-600 text-gray-900 font-semibold">
-              Join Kabadi Kart Today
+              Join Kabadi Kart Today 
             </Button>
           </div>
           <div className="relative h-64 md:h-auto">
@@ -109,10 +109,18 @@ const AboutPage: React.FC = () => {
             Whether you're looking to declutter your space, earn extra income, or contribute to a greener planet, Kabadi
             Kart is your go-to platform for all things recyclable.
           </p>
+          <p>
+            want to join as ?
+          </p>
           <Button 
           onClick={() => navigate('/sign-in')}
-          className="bg-green-500 hover:bg-green-600 text-gray-900 text-lg px-8 py-3 font-semibold">
-            Get Started with Kabadi Kart
+          className="bg-green-500 hover:bg-green-600 text-gray-900 text-lg px-8 py-3 font-semibold mt-4">
+            User
+          </Button>
+          <Button 
+          onClick={() => navigate('collector/sign-in')}
+          className="bg-green-500 hover:bg-green-600 text-gray-900 text-lg px-8 py-3 font-semibold ml-4">
+            Collector
           </Button>
         </div>
       </main>

@@ -9,6 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { motion } from "framer-motion"
+import { Label } from "@/components/ui/label"
 import axios from "axios"
 
 const CollectorSignUpSchema = z.object({
@@ -35,8 +36,7 @@ const CollectorSignUpSchema = z.object({
 type CollectorSignUpFormData = z.infer<typeof CollectorSignUpSchema>
 
 const CollectorSignUp = () => {
-
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   const [serviceAreaInput, setServiceAreaInput] = useState("")
   const [serviceAreas, setServiceAreas] = useState<string[]>([])
 
@@ -65,14 +65,13 @@ const CollectorSignUp = () => {
   }
 
   const onSubmit = async (data: CollectorSignUpFormData) => {
-    console.log("from frontend ",data)
+    console.log("from frontend ", data)
     try {
-        await axios.post('http://localhost:8068/collector/sign-up', data);
-        console.log(data);
-        navigate('/collector/sign-in');
-        
+      await axios.post("http://localhost:8068/collector/sign-up", data)
+      console.log(data)
+      navigate("/collector/sign-in")
     } catch (error) {
-        console.error(error);
+      console.error(error)
     }
   }
 
@@ -85,40 +84,48 @@ const CollectorSignUp = () => {
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit(onSubmit)} className=" space-y-8 ">
-                <div className=" flex flex-row md:grid md:grid-cols-2 gap-4">
+              <div className=" flex flex-row md:grid md:grid-cols-2 gap-4">
                 <InputField
-                    icon={<Mail className="text-green-300" />}
-                    type="text"
-                    placeholder="Enter your email"
-                    register={register("collectorEmail")}
-                    error={errors.collectorEmail}
+                  icon={<Mail className="text-green-300" />}
+                  type="text"
+                  placeholder="Enter your email"
+                  register={register("collectorEmail")}
+                  error={errors.collectorEmail}
+                  label="Email"
                 />
                 <InputField
-                    icon={<User className="text-green-300" />}
-                    type="text"
-                    placeholder="Choose a username"
-                    register={register("collectorName")}
-                    error={errors.collectorName}
+                  icon={<User className="text-green-300" />}
+                  type="text"
+                  placeholder="Choose a username"
+                  register={register("collectorName")}
+                  error={errors.collectorName}
+                  label="Username"
                 />
                 <InputField
-                    icon={<Smartphone className="text-green-300" />}
-                    type="text"
-                    placeholder="Enter your phone number"
-                    register={register("collectorPhn")}
-                    error={errors.collectorPhn}
+                  icon={<Smartphone className="text-green-300" />}
+                  type="text"
+                  placeholder="Enter your phone number"
+                  register={register("collectorPhn")}
+                  error={errors.collectorPhn}
+                  label="Phone Number"
                 />
                 <InputField
-                    icon={<MapPinHouse className="text-green-300" />}
-                    type="text"
-                    placeholder="Enter your location"
-                    register={register("location")}
-                    error={errors.location}
+                  icon={<MapPinHouse className="text-green-300" />}
+                  type="text"
+                  placeholder="Enter your location"
+                  register={register("location")}
+                  error={errors.location}
+                  label="Location"
                 />
-                </div>
-              <div className="space-y-4">
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="serviceArea" className="text-white">
+                  Service Areas
+                </Label>
                 <div className="relative">
                   <LandPlot className="absolute left-3 top-1/2 transform -translate-y-1/2 text-green-300" />
                   <Input
+                    id="serviceArea"
                     type="text"
                     value={serviceAreaInput}
                     onChange={(e) => setServiceAreaInput(e.target.value)}
@@ -163,6 +170,7 @@ const CollectorSignUp = () => {
                 placeholder="Create a password"
                 register={register("password")}
                 error={errors.password}
+                label="Password"
               />
               <Button className="w-full text-xl py-6 mt-4 bg-green-500 hover:bg-green-600 text-white font-bold focus:outline-none focus:ring-2 focus:ring-green-400 transition-all duration-300 ease-in-out transform hover:scale-105">
                 Get Started
@@ -173,8 +181,8 @@ const CollectorSignUp = () => {
             <p className="text-lg text-gray-200">
               Already have an account?{" "}
               <span
-              onClick={() => navigate("/collector/sign-in")}
-              className="text-white font-semibold underline hover:text-green-200 transition-colors duration-300 cursor-pointer"
+                onClick={() => navigate("/collector/sign-in")}
+                className="text-white font-semibold underline hover:text-green-200 transition-colors duration-300 cursor-pointer"
               >
                 Sign in
               </span>
@@ -192,18 +200,25 @@ interface InputFieldProps {
   placeholder: string
   register: any
   error?: { message?: string }
+  label: string
 }
 
-const InputField: React.FC<InputFieldProps> = ({ icon, type, placeholder, register, error }) => (
-  <div className="relative">
-    <div className="absolute left-3 top-1/2 transform -translate-y-1/2">{icon}</div>
-    <Input
-      className="pl-10 w-full text-lg text-white bg-white/20 border-0 rounded-lg py-3 px-10 focus:outline-none focus:ring-2 focus:ring-white/50 placeholder-gray-300"
-      type={type}
-      placeholder={placeholder}
-      {...register}
-    />
-    {error && <p className="text-sm text-red-500 mt-1">{error.message}</p>}
+const InputField: React.FC<InputFieldProps> = ({ icon, type, placeholder, register, error, label }) => (
+  <div className="space-y-2">
+    <Label htmlFor={label} className="text-white">
+      {label}
+    </Label>
+    <div className="relative">
+      <div className="absolute left-3 top-1/2 transform -translate-y-1/2">{icon}</div>
+      <Input
+        id={label}
+        className="pl-10 w-full text-lg text-white bg-white/20 border-0 rounded-lg py-3 px-10 focus:outline-none focus:ring-2 focus:ring-white/50 placeholder-gray-300"
+        type={type}
+        placeholder={placeholder}
+        {...register}
+      />
+      {error && <p className="text-sm text-red-500 mt-1">{error.message}</p>}
+    </div>
   </div>
 )
 
