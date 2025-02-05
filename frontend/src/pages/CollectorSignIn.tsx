@@ -21,7 +21,7 @@ type SignInFormData = z.infer<typeof signInSchema>;
 
 const CollectorSignIn = () => {
   const navigate = useNavigate();
-  const { setUser } = useUser();
+ 
 
   const {
     register,
