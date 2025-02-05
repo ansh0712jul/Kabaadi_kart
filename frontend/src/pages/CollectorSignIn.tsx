@@ -38,8 +38,8 @@ const CollectorSignIn = () => {
       
       const { accessToken, refreshToken,collector} = response.data.data;
 
-      localStorage.setItem('accessToken', accessToken);
-      localStorage.setItem('refreshToken', refreshToken);
+      localStorage.setItem('accessTokenCollector', accessToken);
+      localStorage.setItem('refreshTokenCollector', refreshToken);
 
       console.log("token  ->",accessToken);
       

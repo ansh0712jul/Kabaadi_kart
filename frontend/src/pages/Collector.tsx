@@ -70,6 +70,13 @@ export default function CollectorDashboard() {
     }
 };
 
+useEffect(() => {
+  const interval = setInterval(() => {
+  }, 1000);
+
+  return () => clearInterval(interval);
+}, []);
+
   useEffect(() => {
     const collector = localStorage.getItem('collector');
     const parsedcollector = collector? JSON.parse(collector) : null;
